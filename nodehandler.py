@@ -35,6 +35,11 @@ class NodeHandler(object):
         self.nodeCalculator.createNodeList(self.area.mapName)
         self.nodes = self.nodeCalculator.nodeDict
         
+    def update(self, dt):
+        pass
+    
+    def addNodeTraveler(self, entity):
+        pass
 
 
         
