@@ -52,9 +52,32 @@ class FourWayAbstract(object):
     def __updateVersion3__(self, dt):
         '''Entity visually moves from node to node, 
         but does not stop on each node'''
-        pass
-          
+        self.moveTowardsTarget(dt)
+        
+        if self.overshotTarget():
+            self.node = self.target
+            #self.portal()
+            self.setValidDirections()
 
+            if self.keyDirection:# if a key is being pressed
+                if self.isValidDirection(self.keyDirection):
+                    if self.keyDirection != self.entity.direction:
+                        self.changeDirection()
+                    else:#is in the same direction
+                        self.setTarget(self.entity.direction)
+                else: #key direction not in valid directions
+                    self.checkCurrentDirection()
+            else: #key not being pressed
+                self.restOnNode(self.node)
+               
+        else: #has not overshot target
+            if self.isResting():
+                if self.isValidDirection(self.keyDirection):
+                    self.setEntityDirection(self.keyDirection)
+            else:
+                if self.keyDirection == self.entity.direction*-1:
+                    self.reverseDirection()
+          
     #def setValidNodeVals(self, nodeVal):
         '''Set the valid node values that the entity is allowed to move'''
     #    self.validValues = self.nodes[nodeVal].neighbors.values()
