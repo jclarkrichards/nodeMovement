@@ -38,16 +38,17 @@ class NodeHandler(object):
         
     def setPlayer(self, entity):
         self.player = entity
+        self.area.addEntity(entity)
         
     def loadMapData(self):
         self.nodeCalculator.createNodeList(self.area.mapName)
         self.area.nodes = self.nodeCalculator.nodeDict
         
     def update(self, dt):
-        pass
+        for mover in self.area.moveList:
+            mover.update(dt)
     
-    def addNodeTraveler(self, entity):
-        pass
+   
 
 
         
