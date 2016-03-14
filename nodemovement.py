@@ -18,7 +18,7 @@ class FourWayAbstract(object):
         self.node = nodeVal
         self.target = nodeVal
         self.entity = entity
-        self.direction = 0
+        self.keyDirection = 0
         self.setValidDirections()
 
     def update(self, dt):
@@ -89,24 +89,24 @@ class FourWayAbstract(object):
     def keyContinuous(self, key):
         '''Listen for directional key presses'''
         if key[K_UP]:
-            self.direction = UP
+            self.keyDirection = UP
         elif key[K_DOWN]:
-            self.direction = DOWN
+            self.keyDirection = DOWN
         elif key[K_RIGHT]:
-            self.direction = RIGHT
+            self.keyDirection = RIGHT
         elif key[K_LEFT]:
-            self.direction = LEFT
+            self.keyDirection = LEFT
         else:
-            self.direction = None
+            self.keyDirection = None
         
     def keyDiscrete(self, key):
         if key == K_LEFT:
-            self.direction = LEFT
+            self.keyDirection = LEFT
         elif key == K_RIGHT:
-            self.direction = RIGHT
+            self.keyDirection = RIGHT
         elif key == K_UP:
-            self.direction = UP
+            self.keyDirection = UP
         elif key == K_DOWN:
-            self.direction = DOWN
+            self.keyDirection = DOWN
 
 
