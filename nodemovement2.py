@@ -21,9 +21,7 @@ class FourWayDiscrete(FourWayAbstract):
         else:
             if self.keyDirection in self.validDirections:
                 if self.entity.direction == STOP:
-                    self.entity.direction = self.keyDirection
-                    self.setTarget(self.keyDirection)
-                    self.validDirections = [self.keyDirection]
+                    self.setEntityDirection(self.keyDirection)
         self.keyDirection = STOP
 
         
