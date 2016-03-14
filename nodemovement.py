@@ -12,8 +12,10 @@ DIRECTIONS = {UP:Vector2D(0,-1), DOWN:Vector2D(0,1),
 
 class FourWayAbstract(object):
     def __init__(self, nodes, nodeVal, entity, version=1):
-        '''node is the starting node.  All other nodes are connected
-        entity is the entity that travels from node to node'''
+        '''nodes is the dictionary of all nodes.  
+        nodeVal is the value of the starting node.
+        entity is the Entity that moves around the nodes.
+        version is the type of movement required. (1, 2, or 3)'''
         self.nodes = nodes
         self.node = nodeVal
         self.target = nodeVal
@@ -21,6 +23,9 @@ class FourWayAbstract(object):
         self.version = version
         self.keyDirection = STOP
         self.setValidDirections()
+        if self.version == 3:
+            if self.entity.direction in self.validDirections:
+                self.setEntityDirection(self.entity.direction)
 
     def update(self, dt):
         if self.version == 1:
