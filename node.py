@@ -28,6 +28,7 @@ class NodeGroup(object):
 
     def createNodeList(self, filename):
         '''Create a dictionary of nodes'''
+        self.nodeDict = {}
         dt = numpy.dtype((str, 2))
         self.layout = loadtxt(filename, dtype=dt)
         rows, cols = self.layout.shape
