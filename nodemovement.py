@@ -22,6 +22,14 @@ class FourWayMovement(object):
         if self.version == 3:
             if self.isValidDirection(self.entity.direction):
                 self.setEntityDirection(self.entity.direction)
+                
+    def loadNewNodes(self, nodes, startNode):
+        '''Load a new set of nodes to use'''
+        self.nodes = nodes
+        self.node = startNode
+        self.target = startNode
+        self.keyDirection = STOP
+        self.placeOnNode(self.node)
 
     def update(self, dt):
         if self.version == 1:
@@ -176,9 +184,9 @@ class FourWayMovement(object):
         self.placeOnNode(self.node)
         self.setEntityDirection(self.keyDirection)
         
-    def placeOnNode(self, node):
+    def placeOnNode(self, nodeVal):
         '''Place the entity on top of a node'''
-        self.entity.position = self.nodes[node].position
+        self.entity.position = self.nodes[nodeVal].position
         
     def setKeyDirection(self, key):
         '''Set the direction of the key being pressed'''
