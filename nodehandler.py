@@ -8,7 +8,7 @@ class MapNode(object):
         self.neighbors = {}
         self.ID = 0
         self.playerStart = 0
-        self.moveList = []
+        self.movers = {}
         
         
 class Area1(MapNode):
@@ -19,7 +19,8 @@ class Area1(MapNode):
         self.playerStart = 2
     
     def addEntity(self, entity):
-        self.moveList.append(FourWayMovement(self.nodes, 1, entity, level=3))
+        entity.ID = 1 #for testing
+        self.movers[entity.ID] = FourWayMovement(self.nodes, 1, entity, level=3)
 
 
 class NodeHandler(object):
@@ -45,7 +46,7 @@ class NodeHandler(object):
         self.area.nodes = self.nodeCalculator.nodeDict
         
     def update(self, dt):
-        for mover in self.area.moveList:
+        for mover in self.area.moveList.values():
             mover.update(dt)
     
    
