@@ -5,10 +5,9 @@ from nodemovement import FourWayMovement
 from vectors import Vector2D
 
 class Entity(object):
-    def __init__(self, nodes):
-        startNode = 2
+    def __init__(self, nodes, startNode):
         self.position = nodes[startNode].position
-        self.direction = 1
+        self.direction = 0
         self.move = FourWayMovement(nodes, startNode, self, version=3)
         self.speed = 100
         
