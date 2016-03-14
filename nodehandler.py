@@ -13,7 +13,7 @@ class World(object):
         
 class Area1(World):
     def __init__(self):
-        MapNode.__init__(self)
+        World.__init__(self)
         self.ID = 1
         self.mapName = 'maze_test.txt'
         self.playerStart = 2
