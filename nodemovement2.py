@@ -19,12 +19,12 @@ class FourWayDiscrete(FourWayAbstract):
             self.validDirections = self.nodes[self.node].neighbors
             self.entity.direction = STOP
         else:
-            if self.direction in self.validDirections:
+            if self.keyDirection in self.validDirections:
                 if self.entity.direction == STOP:
-                    self.entity.direction = self.direction
-                    self.setTarget(self.direction)
-                    self.validDirections = [self.direction]
-        self.direction = STOP
+                    self.entity.direction = self.keyDirection
+                    self.setTarget(self.keyDirection)
+                    self.validDirections = [self.keyDirection]
+        self.keyDirection = STOP
 
         
     def keyContinuous(self, key_pressed):
