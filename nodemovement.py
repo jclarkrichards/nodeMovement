@@ -91,8 +91,37 @@ class FourWayAbstract(object):
     def portal(self):
         if self.nodes[self.node].portal:
             self.node = self.nodes[self.node].portal
-            self.entity.position = self.nodes[self.node].position
+            self.placeOnNode(self.node)
             self.setValidDirections()
+            
+    def checkCurrentDirection(self):
+        '''Check if entity is able to continue in current direction'''
+        if self.isValidDirection(self.entity.direction):
+            self.setTarget(self.entity.direction)
+        else:
+            self.restOnNode()
+
+    def restOnNode(self):
+        '''Set the entity on top of a node and rest'''
+        self.placeOnNode(self.node)
+        self.entity.direction = STOP
+        
+    def isResting(self):
+        '''Return True if entity is at rest'''
+        return self.entity.direction == STOP
+        
+    def isValidDirection(self, direction):
+        '''Return True if direction is a valid direction'''
+        return direction in self.validDirections
+        
+    def changeDirection(self):
+        '''Change entities direction'''
+        self.placeOnNode(self.node)
+        self.setEntityDirection(self.keyDirection)
+        
+    def placeOnNode(self, node):
+        '''Place the entity on top of a node'''
+        self.entity.position = self.nodes[node].position
             
     def keyContinuous(self, key):
         '''Listen for directional key presses'''
