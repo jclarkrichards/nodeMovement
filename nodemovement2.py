@@ -16,12 +16,10 @@ class FourWayDiscrete(FourWayAbstract):
         if self.overshotTarget():
             self.node = self.target
             self.restOnNode(self.node)
-            self.entity.position = self.nodes[self.node].position
-            self.validDirections = self.nodes[self.node].neighbors
-            self.entity.direction = STOP
+            self.setValidDirections()
         else:
-            if self.keyDirection in self.validDirections:
-                if self.entity.direction == STOP:
+            if self.isValidDirection(self.keyDirection):
+                if self.isResting():
                     self.setEntityDirection(self.keyDirection)
         self.keyDirection = STOP
 
