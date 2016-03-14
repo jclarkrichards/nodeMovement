@@ -1,5 +1,6 @@
 import pygame
 from nodemovement2 import FourWayDiscrete
+from nodemovement3 import FourWayContinuous
 from vectors import Vector2D
 
 class Entity(object):
@@ -7,7 +8,7 @@ class Entity(object):
         startNode = 2
         self.position = nodes[startNode].position
         self.direction = 1
-        self.move = FourWayDiscrete(nodes, startNode, self)
+        self.move = FourWayContinuous(nodes, startNode, self)
         self.speed = 100
         
     def update(self, dt):
@@ -15,4 +16,4 @@ class Entity(object):
 
     def render(self, screen):
         x, y = self.position.toTuple()
-        pygame.draw.circle(screen, (200,200,0), (int(x), int(y)), 15)
+        pygame.draw.circle(screen, (200,200,0), (int(x), int(y)), 8)

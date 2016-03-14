@@ -74,33 +74,31 @@ class FourWayAbstract(object):
         self.node = temp
         self.entity.direction *= -1
 
-    #def removeOppositeDirection(self):
-    #    self.setValidDirections()
-        #self.validDirections = self.node.neighbors.keys()
-    #    if self.entity.direction*-1 in self.validDirections:
-    #        if len(self.validDirections) > 1:
-    #            self.validDirections.remove(self.entity.direction*-1)
+    def removeOppositeDirection(self):
+        self.setValidDirections()
+        if self.entity.direction*-1 in self.validDirections:
+            if len(self.validDirections) > 1:
+                self.validDirections.remove(self.entity.direction*-1)
 
-    #def portal(self):
-    #    if self.nodes[self.node].portal:
-    #        self.node = self.nodes[self.node].portal
-    #        self.entity.position = self.nodes[self.node].position
-    #        self.setValidDirections()
-            #self.validDirections = self.nodes[self.node].neighbors.keys()
+    def portal(self):
+        if self.nodes[self.node].portal:
+            self.node = self.nodes[self.node].portal
+            self.entity.position = self.nodes[self.node].position
+            self.setValidDirections()
             
     def keyContinuous(self, key):
         '''Listen for directional key presses'''
         if key[K_UP]:
-            self.direction = 1
+            self.direction = UP
         elif key[K_DOWN]:
-            self.direction = -1
+            self.direction = DOWN
         elif key[K_RIGHT]:
-            self.direction = -2
+            self.direction = RIGHT
         elif key[K_LEFT]:
-            self.direction = 2
+            self.direction = LEFT
         else:
-            self.direction = 0
-    
+            self.direction = None
+        
     def keyDiscrete(self, key):
         if key == K_LEFT:
             self.direction = LEFT

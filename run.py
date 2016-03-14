@@ -19,12 +19,14 @@ jon = Entity(nodes.nodeDict)
 
 while True:
     dt = clock.tick(30) / 1000.0
-
+    key_pressed = pygame.key.get_pressed()
+    jon.move.keyContinuous(key_pressed)
     for event in pygame.event.get():
         if event.type == QUIT:
             exit()
         if event.type == KEYDOWN:
-            jon.move.keyDiscrete(event.key)
+            pass
+            #jon.move.keyDiscrete(event.key)
             
     jon.update(dt)
 

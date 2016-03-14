@@ -179,5 +179,5 @@ class NodeGroup(object):
                 pygame.draw.line(screen, (255,255,255), pos1, pos2, 2)
         for node in self.nodeDict.values():
             pos1 = node.position.toTuple()
-            pygame.draw.circle(screen, node.COLOR, pos1, 10)
+            pygame.draw.circle(screen, node.COLOR, pos1, 5)
 
