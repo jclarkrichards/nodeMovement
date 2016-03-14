@@ -101,9 +101,9 @@ class FourWayAbstract(object):
         else:
             self.restOnNode()
 
-    def restOnNode(self):
+    def restOnNode(self, node):
         '''Set the entity on top of a node and rest'''
-        self.placeOnNode(self.node)
+        self.placeOnNode(node)
         self.entity.direction = STOP
         
     def isResting(self):
