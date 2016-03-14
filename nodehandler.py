@@ -45,7 +45,7 @@ class NodeHandler(object):
         self.area.nodes = self.nodeCalculator.nodeDict
         
     def update(self, dt):
-        for mover in self.area.moveList.values():
+        for mover in self.area.movers.values():
             mover.update(dt)
     
    
