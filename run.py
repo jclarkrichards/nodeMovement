@@ -16,13 +16,13 @@ nodes = NodeHandler(TILEWIDTH, TILEHEIGHT)
 #nodes = NodeGroup(TILEWIDTH, TILEHEIGHT)
 #nodes.createNodeList('maze_test.txt')
 jon = Entity() #nodes.nodeDict, 2)
-nodes.addPlayer(jon)
+nodes.setPlayer(jon)
 
 while True:
     dt = clock.tick(30) / 1000.0
     key_pressed = pygame.key.get_pressed()
     #jon.move.setKeyPressed(key_pressed)
-    nodes.
+    nodes.area.moveList[jon.ID].setKeyPressed(key_pressed)
     for event in pygame.event.get():
         if event.type == QUIT:
             exit()
