@@ -24,16 +24,20 @@ class FourWayAbstract(object):
     def update(self, dt):
         pass
 
-    def setValidNodeVals(self, nodeVal):
+    #def setValidNodeVals(self, nodeVal):
         '''Set the valid node values that the entity is allowed to move'''
-        self.validValues = self.nodes[nodeVal].neighbors.values()
-        for val in self.nodes[nodeVal].hidden:
-            if val in self.validValues:
-                self.validValues.remove(val)
+    #    self.validValues = self.nodes[nodeVal].neighbors.values()
+    #    for val in self.nodes[nodeVal].hidden:
+    #        if val in self.validValues:
+    #            self.validValues.remove(val)
         
     def setValidDirections(self):
         '''Set the valid directions that the entity is allowed to move'''
         self.validDirections = self.nodes[self.node].neighbors.keys()
+        self.removeHiddenNodes()
+        
+    def removeHiddenNodes(self):
+        '''If a node is defined as hidden, then remove from valid directions'''
         for nodeVal in self.nodes[self.node].hidden:
             for direction in self.nodes[self.node].neighbors.keys():
                 if self.nodes[self.node].neighbors[direction] == nodeVal:
@@ -41,6 +45,10 @@ class FourWayAbstract(object):
                         self.validDirections.remove(direction)
                     except ValueError:
                         pass
+                      
+    def getNeighborValue(self, node, direction):
+        '''Return the value of a neighbor in a direction'''
+        return self.nodes[node].neighbors[direction]
     
     def setEntityDirection(self, direction):
         '''Set valid directions when in between nodes'''
