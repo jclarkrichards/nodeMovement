@@ -8,6 +8,7 @@ class MapNode(object):
         self.neighbors = {}
         self.ID = 0
         self.playerStart = 0
+        self.moveList = []
         
         
 class Area1(MapNode):
@@ -16,6 +17,9 @@ class Area1(MapNode):
         self.ID = 1
         self.mapName = 'maze_test.txt'
         self.playerStart = 2
+    
+    def addEntity(self, entity):
+        self.moveList.append(FourWayMovement(self.nodes, 1, entity, level=3))
 
 
 class NodeHandler(object):
@@ -27,9 +31,13 @@ class NodeHandler(object):
         self.areas = {1:Area1()}
         self.area = self.areas[self.areaID]
         self.nodeCalculator = NodeGroup(width, height)
+        self.loadMapData()
         
     def setArea(self, ID):
         self.area = self.areas[ID]
+        
+    def setPlayer(self, entity):
+        self.player = entity
         
     def loadMapData(self):
         self.nodeCalculator.createNodeList(self.area.mapName)
