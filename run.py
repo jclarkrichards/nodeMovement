@@ -22,7 +22,8 @@ while True:
     dt = clock.tick(30) / 1000.0
     key_pressed = pygame.key.get_pressed()
     #jon.move.setKeyPressed(key_pressed)
-    nodes.area.moveList[jon.ID].setKeyPressed(key_pressed)
+    nodes.area.movers[jon.ID].setKeyPressed(key_pressed)
+    
     for event in pygame.event.get():
         if event.type == QUIT:
             exit()
