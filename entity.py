@@ -1,6 +1,7 @@
 import pygame
-from nodemovement2 import FourWayDiscrete
-from nodemovement3 import FourWayContinuous
+from nodemovement import FourWayMovement
+#from nodemovement2 import FourWayDiscrete
+#from nodemovement3 import FourWayContinuous
 from vectors import Vector2D
 
 class Entity(object):
@@ -8,7 +9,7 @@ class Entity(object):
         startNode = 2
         self.position = nodes[startNode].position
         self.direction = 1
-        self.move = FourWayContinuous(nodes, startNode, self)
+        self.move = FourWayMovement(nodes, startNode, self, version=3)
         self.speed = 100
         
     def update(self, dt):
