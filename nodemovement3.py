@@ -19,10 +19,9 @@ class FourWayContinuous(FourWayAbstract):
             #self.portal()
             self.setValidDirections()
 
-            if self.direction:# if a key is being pressed
-                #if pressed direction is in the valid directions
-                if self.isValidDirection(self.direction):
-                    if self.direction != self.entity.direction:
+            if self.keyDirection:# if a key is being pressed
+                if self.isValidDirection(self.keyDirection):
+                    if self.keyDirection != self.entity.direction:
                         self.changeDirection()
                     else:#is in the same direction
                         self.setTarget(self.entity.direction)
@@ -32,11 +31,11 @@ class FourWayContinuous(FourWayAbstract):
                 self.restOnNode()
                
         else: #has not overshot target
-            if self.entity.direction == STOP:
-                if self.isValidDirection(self.direction):
-                    self.setEntityDirection(self.direction)
+            if self.isResting():
+                if self.isValidDirection(self.keyDirection):
+                    self.setEntityDirection(self.keyDirection)
             else:
-                if self.direction == self.entity.direction*-1:
+                if self.keyDirection == self.entity.direction*-1:
                     self.reverseDirection()
                     
     def checkCurrentDirection(self):
@@ -47,15 +46,26 @@ class FourWayContinuous(FourWayAbstract):
             self.restOnNode()
 
     def restOnNode(self):
-        self.entity.position = self.nodes[self.node].position
+        '''Set the entity on top of a node and rest'''
+        self.placeOnNode(self.node)
         self.entity.direction = STOP
         
+    def isResting(self):
+        '''Return True if entity is at rest'''
+        return self.entity.direction == STOP
+        
     def isValidDirection(self, direction):
+        '''Return True if direction is a valid direction'''
         return direction in self.validDirections
         
     def changeDirection(self):
-        self.entity.position = self.nodes[self.node].position
-        self.setEntityDirection(self.direction)
+        '''Change entities direction'''
+        self.placeOnNode(self.node)
+        self.setEntityDirection(self.keyDirection)
+        
+    def placeOnNode(self, node):
+        '''Place the entity on top of a node'''
+        self.entity.position = self.nodes[node].position
         
     def keyDiscrete(self, key):
         pass
