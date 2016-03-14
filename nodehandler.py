@@ -4,7 +4,7 @@ from nodemovement import FourWayMovement
 class MapNode(object):
     def __init__(self):
         self.mapName = ''
-        self.nodes = None
+        self.nodes = {}
         self.neighbors = {}
         self.ID = 0
         self.playerStart = 0
@@ -22,7 +22,7 @@ class NodeHandler(object):
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.nodes = {}
+        #self.nodes = {}
         self.areaID = 1
         self.areas = {1:Area1()}
         self.area = self.areas[self.areaID]
@@ -33,7 +33,7 @@ class NodeHandler(object):
         
     def loadMapData(self):
         self.nodeCalculator.createNodeList(self.area.mapName)
-        self.nodes = self.nodeCalculator.nodeDict
+        self.area.nodes = self.nodeCalculator.nodeDict
         
     def update(self, dt):
         pass
