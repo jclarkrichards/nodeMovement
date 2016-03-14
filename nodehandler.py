@@ -1,7 +1,7 @@
 from node import NodeGroup
 from nodemovement import FourWayMovement
 
-class MapNode(object):
+class World(object):
     def __init__(self):
         self.mapName = ''
         self.nodes = {}
@@ -11,7 +11,7 @@ class MapNode(object):
         self.movers = {}
         
         
-class Area1(MapNode):
+class Area1(World):
     def __init__(self):
         MapNode.__init__(self)
         self.ID = 1
