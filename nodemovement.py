@@ -31,12 +31,27 @@ class FourWayAbstract(object):
             self.__updateVersion3__(dt)
             
     def __updateVersion1__(self, dt):
+        '''Entity jumps from node to node.  
+        No visual movement.'''
         pass
     
     def __updateVersion2__(self, dt):
-        pass
+        '''Entity visually moves from node to node, 
+        but stops on each node'''
+        self.moveTowardsTarget(dt)
+        if self.overshotTarget():
+            self.node = self.target
+            self.restOnNode(self.node)
+            self.setValidDirections()
+        else:
+            if self.isValidDirection(self.keyDirection):
+                if self.isResting():
+                    self.setEntityDirection(self.keyDirection)
+        self.keyDirection = STOP
     
     def __updateVersion3__(self, dt):
+        '''Entity visually moves from node to node, 
+        but does not stop on each node'''
         pass
           
 
