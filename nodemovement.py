@@ -18,7 +18,7 @@ class FourWayAbstract(object):
         self.node = nodeVal
         self.target = nodeVal
         self.entity = entity
-        self.keyDirection = 0
+        self.keyDirection = STOP
         self.setValidDirections()
 
     def update(self, dt):
@@ -122,9 +122,21 @@ class FourWayAbstract(object):
     def placeOnNode(self, node):
         '''Place the entity on top of a node'''
         self.entity.position = self.nodes[node].position
-            
+        
+    def setKeyDirection(self, key):
+        '''Set the direction of the key being pressed'''
+        if key[K_UP]:
+            self.keyDirection = UP
+        elif key[K_DOWN]:
+            self.keyDirection = DOWN
+        elif key[K_RIGHT]:
+            self.keyDirection = RIGHT
+        elif key[K_LEFT]:
+            self.keyDirection = LEFT
+        else:
+            self.keyDirection = None
+    '''        
     def keyContinuous(self, key):
-        '''Listen for directional key presses'''
         if key[K_UP]:
             self.keyDirection = UP
         elif key[K_DOWN]:
@@ -145,5 +157,6 @@ class FourWayAbstract(object):
             self.keyDirection = UP
         elif key == K_DOWN:
             self.keyDirection = DOWN
+    '''
 
 
