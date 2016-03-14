@@ -1,16 +1,12 @@
 import pygame
 from pygame.locals import *
 from vectors import Vector2D
-from constants import *
-UP = 1
-DOWN = -1
-LEFT = 2
-RIGHT = -2
-STOP = 0
+
+UP, DOWN, LEFT, RIGHT, STOP = (1, -1, 2, -2, 0)
 DIRECTIONS = {UP:Vector2D(0,-1), DOWN:Vector2D(0,1),
               LEFT:Vector2D(-1,0), RIGHT:Vector2D(1,0), STOP:Vector2D()}
 
-class FourWayAbstract(object):
+class FourWayMovement(object):
     def __init__(self, nodes, nodeVal, entity, version=1):
         '''nodes is the dictionary of all nodes.  
         nodeVal is the value of the starting node.
@@ -24,7 +20,7 @@ class FourWayAbstract(object):
         self.keyDirection = STOP
         self.setValidDirections()
         if self.version == 3:
-            if self.entity.direction in self.validDirections:
+            if self.isValidDirection(self.entity.direction):
                 self.setEntityDirection(self.entity.direction)
 
     def update(self, dt):
@@ -84,7 +80,7 @@ class FourWayAbstract(object):
                     self.reverseDirection()
           
     #def setValidNodeVals(self, nodeVal):
-        '''Set the valid node values that the entity is allowed to move'''
+    #    '''Set the valid node values that the entity is allowed to move'''
     #    self.validValues = self.nodes[nodeVal].neighbors.values()
     #    for val in self.nodes[nodeVal].hidden:
     #        if val in self.validValues:
@@ -142,8 +138,10 @@ class FourWayAbstract(object):
         self.entity.direction *= -1
 
     def removeOppositeDirection(self):
+        '''Remove opposite direction only if there are other 
+        directions to choose from'''
         self.setValidDirections()
-        if self.entity.direction*-1 in self.validDirections:
+        if self.isValidDirection(self.entity.direction*-1):
             if len(self.validDirections) > 1:
                 self.validDirections.remove(self.entity.direction*-1)
 
