@@ -164,7 +164,7 @@ class FourWayMovement(object):
         if self.isValidDirection(self.entity.direction):
             self.setTarget(self.entity.direction)
         else:
-            self.restOnNode()
+            self.restOnNode(self.node)
 
     def restOnNode(self, node):
         '''Set the entity on top of a node and rest'''

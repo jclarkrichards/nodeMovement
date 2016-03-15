@@ -5,7 +5,7 @@ from entity import Entity
 from nodehandler import NodeHandler
 
 TILEWIDTH, TILEHEIGHT = (16, 16)
-SCREENSIZE = (TILEWIDTH*30, TILEHEIGHT*30)
+SCREENSIZE = (TILEWIDTH*25, TILEHEIGHT*25)
 pygame.init()
 screen = pygame.display.set_mode(SCREENSIZE, 0, 32)
 clock = pygame.time.Clock()
@@ -22,7 +22,7 @@ while True:
     dt = clock.tick(30) / 1000.0
     key_pressed = pygame.key.get_pressed()
     #jon.move.setKeyPressed(key_pressed)
-    nodes.area.movers[jon.ID].setKeyPressed(key_pressed)
+    nodes.area.movers[jon.ID].setKeyDirection(key_pressed)
     
     for event in pygame.event.get():
         if event.type == QUIT:

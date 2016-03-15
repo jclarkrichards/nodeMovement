@@ -15,12 +15,12 @@ class Area1(World):
     def __init__(self):
         World.__init__(self)
         self.ID = 1
-        self.mapName = 'maze_test.txt'
+        self.mapName = 'area2.txt'
         self.playerStart = 2
     
     def addPlayer(self, entity):
         entity.ID = 1 #for testing
-        self.movers[entity.ID] = FourWayMovement(self.nodes, self.playerStart, entity, level=3)
+        self.movers[entity.ID] = FourWayMovement(self.nodes, self.playerStart, entity, version=3)
 
 
 class NodeHandler(object):
@@ -47,7 +47,9 @@ class NodeHandler(object):
     def update(self, dt):
         for mover in self.area.movers.values():
             mover.update(dt)
-    
+
+    def render(self, screen):
+        self.nodeCalculator.render(screen)
    
 
 

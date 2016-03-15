@@ -5,9 +5,9 @@ import pygame
 from vectors import Vector2D
 
 class Entity(object):
-    def __init__(self, nodes, startNode):
+    def __init__(self):#, nodes, startNode):
         self.ID = 0
-        self.position = nodes[startNode].position
+        self.position = Vector2D() #nodes[startNode].position
         self.direction = 0
         #self.move = FourWayMovement(nodes, startNode, self, version=3)
         self.speed = 100
