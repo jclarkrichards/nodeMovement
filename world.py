@@ -13,6 +13,7 @@ class World(object):
         self.mapNeighbors = {}
         self.keyPressed = 0
         self.dynamicOBJ = {}
+        self.playerID = 0
         
     def setup(self, x, y, tileSize=1):
         '''Set the width and height and size of each tile'''
@@ -46,8 +47,10 @@ class World(object):
         obj.setID(newID)
         database[newID] = obj
     
-    def addDynamicObject(self, obj):
+    def addDynamicObject(self, obj, setAsPlayer=False):
         self.__addObject__(self.dynamicOBJ, obj)
+        if setAsPlayer:
+            self.playerID = max(database.keys())
     
     def handleEvents(self):
         '''Checks for key presses, mouse clicks, etc...'''
