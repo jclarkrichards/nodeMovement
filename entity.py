@@ -3,12 +3,12 @@ from vectors import Vector2D
 from nodemovement import FourWayMovement
 
 class Entity(object):
-    def __init__(self, nodes, nodeVal):
+    def __init__(self):
         self.ID = 0
         self.position = Vector2D() 
         self.direction = 0
         self.speed = 60
-        self.mover = FourWayMovement(nodes, nodeVal, self, version=3)
+        self.mover = FourWayMovement(self, version=3)
         
     def setID(self, ID):
         self.ID = ID
