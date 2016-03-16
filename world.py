@@ -7,7 +7,7 @@ class World(object):
         self.tileSize = 1
         self.background = None
         self.screen = None
-        self.mapName = ''
+        #self.mapName = ''
         self.nodes = {}
         self.ID = 0
         self.mapNeighbors = {}
@@ -30,11 +30,18 @@ class World(object):
         self.background = pygame.surface.Surface(self.screenSize).convert()
         self.background.fill((0,0,0))
         
-    def addNodes(self):
-        pass
+    def addNodes(self, nodes):
+        self.nodes = nodes
     
     def removeNodes(self):
-        pass
+        self.nodes = {}
+        
+    loadNewArea(self, area):
+        '''An area is an object that defines the nodes and anything
+        else that needs to be loaded into the world'''
+        self.clearAll()
+        self.nodes = area.nodes
+        
     
     def __addObject__(self, database, obj):
         if obj.ID in database.keys():
@@ -67,7 +74,7 @@ class World(object):
         
     def clearAll(self):
         '''Clear out all objects and nodes from the world'''
-        self.nodes = {}
+        self.removeNodes()
         self.clearDynamicObjects()
     
     def render(self):
