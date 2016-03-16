@@ -70,7 +70,7 @@ class World(object):
                 exit()
     
     def update(self, dt):
-        pass
+        self.player.move(dt, self.keyPressed)
     
     def clearDynamicObjects(self):
         self.dynamicOBJ = {}
