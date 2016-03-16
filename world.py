@@ -7,13 +7,12 @@ class World(object):
         self.tileSize = 1
         self.background = None
         self.screen = None
-        #self.mapName = ''
         self.nodes = {}
         self.ID = 0
         self.mapNeighbors = {}
         self.keyPressed = 0
         self.dynamicOBJ = {}
-        self.playerID = 0
+        self.player = None
         
     def setup(self, x, y, tileSize=1):
         '''Set the width and height and size of each tile'''
@@ -30,19 +29,25 @@ class World(object):
         self.background = pygame.surface.Surface(self.screenSize).convert()
         self.background.fill((0,0,0))
         
+    def setPlayer(self, entity):
+        '''Set the player in the game'''
+        self.player = entity
+        
     def addNodes(self, nodes):
         self.nodes = nodes
     
     def removeNodes(self):
         self.nodes = {}
         
-    loadNewArea(self, area):
+    def loadNewArea(self, area):
         '''An area is an object that defines the nodes and anything
         else that needs to be loaded into the world'''
         self.clearAll()
         self.nodes = area.nodes
+        self.player.loadNewNodes(self.nodes, area.playerStart)
+        for entity in area.entityList:
+            self.addDynamicObject(entity)
         
-    
     def __addObject__(self, database, obj):
         if obj.ID in database.keys():
             return
@@ -54,10 +59,8 @@ class World(object):
         obj.setID(newID)
         database[newID] = obj
     
-    def addDynamicObject(self, obj, setAsPlayer=False):
+    def addDynamicObject(self, obj):
         self.__addObject__(self.dynamicOBJ, obj)
-        if setAsPlayer:
-            self.playerID = max(database.keys())
     
     def handleEvents(self):
         '''Checks for key presses, mouse clicks, etc...'''
@@ -80,5 +83,6 @@ class World(object):
     def render(self):
         self.screen.blit(self.background, (0,0))
         #draw nodes for testing purposes
+        self.player.render(self.screen)
         for item in self.dynamicOBJ.values():
             item.render(self.screen)
