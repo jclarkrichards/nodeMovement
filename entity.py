@@ -13,8 +13,10 @@ class Entity(object):
     def update(self, dt):
         pass
     
-    def move(self, dt):
+    def move(self, dt, key_pressed=None):
         '''Move entity around the nodes'''
+        if key_pressed:
+            self.mover.setKeyDirection(key_pressed)
         self.mover.update(dt)
 
     def render(self, screen):
