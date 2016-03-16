@@ -1,9 +1,8 @@
 import pygame
 from pygame.locals import *
-from node import NodeGroup
 from entity import Entity
-from nodehandler import NodeHandler
 from world import World
+from areas import Area1
 
 world = World()
 world.setup(25, 25, 16)
@@ -11,8 +10,10 @@ world.setup(25, 25, 16)
 clock = pygame.time.Clock()
 nodes = NodeHandler(TILEWIDTH, TILEHEIGHT)
 player = Entity()
-#nodes.setPlayer(player)
-world.addDynamicObject(player, setAsPlayer=True)
+world.addPlayer(player)
+
+area = Area1(16, 16)
+world.loadNewArea(area)
 
 while True:
     world.handleEvents()
@@ -20,7 +21,6 @@ while True:
     #key_pressed = pygame.key.get_pressed()
     #player.move(dt, key_pressed)
     world.update(dt)
-    #nodes.update(dt)
     #nodes.render(screen)
     world.render()
     pygame.display.update()
