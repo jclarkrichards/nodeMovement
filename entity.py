@@ -10,6 +10,9 @@ class Entity(object):
         self.speed = 60
         self.mover = FourWayMovement(nodes, nodeVal, self, version=3)
         
+    def setID(self, ID):
+        self.ID = ID
+        
     def update(self, dt):
         pass
     
