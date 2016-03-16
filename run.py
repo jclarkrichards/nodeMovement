@@ -20,7 +20,6 @@ while True:
     dt = clock.tick(30) / 1000.0
     key_pressed = pygame.key.get_pressed()
     player.move(dt, key_pressed)
-    nodes.area.movers[jon.ID].setKeyDirection(key_pressed)
     
     for event in pygame.event.get():
         if event.type == QUIT:
