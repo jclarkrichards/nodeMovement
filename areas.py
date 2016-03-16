@@ -4,10 +4,10 @@ from nodemovement import FourWayMovement
 class Area1(object):
     def __init__(self, width, height):
         self.ID = 1
-        self.mapName = 'map_junk.txt'
+        mapName = 'map_junk.txt'
         self.playerStart = 2
         nodes = NodeGroup(width, height)
-        nodes.createNodeList(self.area.mapName)
+        nodes.createNodeList(mapName)
         self.nodes = nodes.nodeDict
         self.neighbors = {}
         
