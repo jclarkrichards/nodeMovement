@@ -28,7 +28,7 @@ class FourWayMovement(object):
         self.nodes = nodes
         self.node = startNode
         self.target = startNode
-        self.keyDirection = STOP
+        self.keyDirection = self.entity.direction #STOP
         self.placeOnNode(self.node)
 
     def update(self, dt):
