@@ -10,6 +10,7 @@ class Area1(object):
         nodes.createNodeList(mapName)
         self.nodes = nodes.nodeDict
         self.neighbors = {}
+        self.entityList = []
         
         
         
