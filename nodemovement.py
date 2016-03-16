@@ -7,14 +7,14 @@ DIRECTIONS = {UP:Vector2D(0,-1), DOWN:Vector2D(0,1),
               LEFT:Vector2D(-1,0), RIGHT:Vector2D(1,0), STOP:Vector2D()}
 
 class FourWayMovement(object):
-    def __init__(self, nodes, nodeVal, entity, version=1):
+    def __init__(self, entity, version=1):
         '''nodes is the dictionary of all nodes.  
         nodeVal is the value of the starting node.
         entity is the Entity that moves around the nodes.
         version is the type of movement required. (1, 2, or 3)'''
-        self.nodes = nodes
-        self.node = nodeVal
-        self.target = nodeVal
+        self.nodes = {}
+        self.node = 0
+        self.target = 0
         self.entity = entity
         self.version = version
         self.keyDirection = STOP
