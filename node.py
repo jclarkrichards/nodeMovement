@@ -2,7 +2,7 @@ import pygame
 from vectors import Vector2D
 from numpy import loadtxt
 import numpy
-
+"testing"
 UP = 1
 DOWN = -1
 LEFT = 2
