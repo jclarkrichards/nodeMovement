@@ -1,35 +1,22 @@
 import pygame
-from pygame.locals import *
-from node import NodeGroup
 from entity import Entity
-
-TILEWIDTH, TILEHEIGHT = (16, 16)
-SCREENSIZE = (TILEWIDTH*30, TILEHEIGHT*30)
-pygame.init()
-screen = pygame.display.set_mode(SCREENSIZE, 0, 32)
-background = pygame.surface.Surface(SCREENSIZE).convert()
-background.fill((0,0,0))
-
-nodes = NodeGroup(TILEWIDTH, TILEHEIGHT)
-nodes.createNodeList('maze_test.txt')
+from world import World
+from areas import Area1
 
 clock = pygame.time.Clock()
 
-jon = Entity(nodes.nodeDict)
+world = World()
+world.setup(25, 25, 16)
+player = Entity()
+world.addPlayer(player)
+
+area = Area1(16, 16)
+world.loadNewArea(area)
 
 while True:
+    world.handleEvents()
     dt = clock.tick(30) / 1000.0
-
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            exit()
-        if event.type == KEYDOWN:
-            jon.move.keyDiscrete(event.key)
-            
-    jon.update(dt)
-
-    screen.blit(background, (0,0))
-    nodes.render(screen)
-    jon.render(screen)
-
+    world.update(dt)
+    #nodes.render(screen)
+    world.render()
     pygame.display.update()

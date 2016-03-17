@@ -28,6 +28,7 @@ class NodeGroup(object):
 
     def createNodeList(self, filename):
         '''Create a dictionary of nodes'''
+        self.nodeDict = {}
         dt = numpy.dtype((str, 2))
         self.layout = loadtxt(filename, dtype=dt)
         rows, cols = self.layout.shape
@@ -179,5 +180,5 @@ class NodeGroup(object):
                 pygame.draw.line(screen, (255,255,255), pos1, pos2, 2)
         for node in self.nodeDict.values():
             pos1 = node.position.toTuple()
-            pygame.draw.circle(screen, node.COLOR, pos1, 10)
+            pygame.draw.circle(screen, node.COLOR, pos1, 5)
 
