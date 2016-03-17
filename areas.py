@@ -4,7 +4,7 @@ from nodemovement import FourWayMovement
 class Area1(object):
     def __init__(self, width, height):
         self.ID = 1
-        mapName = 'map_junk.txt'
+        mapName = 'maze_junk.txt'
         self.playerStart = 2
         nodes = NodeGroup(width, height)
         nodes.createNodeList(mapName)
@@ -13,7 +13,7 @@ class Area1(object):
         self.entityList = []
         
         
-        
+"""        
 class World(object):
     def __init__(self):
         self.mapName = ''
@@ -63,7 +63,7 @@ class NodeHandler(object):
 
     def render(self, screen):
         self.nodeCalculator.render(screen)
-   
+"""   
 
 
         

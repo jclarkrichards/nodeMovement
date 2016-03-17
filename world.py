@@ -29,7 +29,7 @@ class World(object):
         self.background = pygame.surface.Surface(self.screenSize).convert()
         self.background.fill((0,0,0))
         
-    def setPlayer(self, entity):
+    def addPlayer(self, entity):
         '''Set the player in the game'''
         self.player = entity
         

@@ -19,6 +19,7 @@ class Entity(object):
     def loadNewNodes(self, nodes, startNode):
         '''Allow entity to move around the new node set'''
         self.mover.loadNewNodes(nodes, startNode)
+        self.mover.test()
         
     def move(self, dt, key_pressed=None):
         '''Move entity around the nodes'''

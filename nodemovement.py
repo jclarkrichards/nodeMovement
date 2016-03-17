@@ -18,6 +18,8 @@ class FourWayMovement(object):
         self.entity = entity
         self.version = version
         self.keyDirection = STOP
+
+    def test(self):
         self.setValidDirections()
         if self.version == 3:
             if self.isValidDirection(self.entity.direction):
