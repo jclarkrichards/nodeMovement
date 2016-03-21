@@ -6,6 +6,7 @@ class AreaSub(object):
         self.startX, self.endX = (0, 0)
         self.startY, self.endY = (0, 0)
         self.neighbors = {}
+        self.nodes = {}
         
     def setDimensions(self, row, col, width, height):
         self.startX = col*width
@@ -41,8 +42,21 @@ class AreaAbstract(object):
             for col in range(cols):
                 self.subArea[numArea] = AreaSub()
                 self.subArea[numArea].setDimensions(row, col, screenWidth, screenHeight)
+                self.distributeNodes(self.subArea[numArea])
                 numArea += 1
-    
+        
+    def distributeNodes(self, area):
+        '''Distribute the nodes into the subAreas'''
+        for nodeVal in self.nodes.keys():
+            nodePos = self.nodes[nodeVal].position
+            if (nodePos.x >= area.startX and
+                nodePos.x < area.endX and
+                nodePos.y >= area.startY and
+                nodePos.y < area.endY):
+                area.nodes[nodeVal] = self.nodes[nodeVal]
+        for nodeVal in area.nodes.values():
+            junk = self.nodes.pop(nodeVal)
+                
     
 class Area1(AreaAbstract):
     def __init__(self, width, height):
