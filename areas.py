@@ -1,12 +1,15 @@
 from node import NodeGroup
 from nodemovement import FourWayMovement
 
+NORTH, SOUTH, EAST, WEST = 1, 2, 3, 4
+
 class AreaSub(object):
     def __init__(self):
         self.startX, self.endX = (0, 0)
         self.startY, self.endY = (0, 0)
-        self.neighbors = {}
+        self.neighbors = {NORTH:None, SOUTH:None, EAST:None, WEST:None}
         self.nodes = {}
+        self.active = False
         
     def setDimensions(self, row, col, width, height):
         self.startX = col*width
@@ -34,6 +37,19 @@ class AreaAbstract(object):
         self.width = nodes.cols * self.tileWidth
         self.height = nodes.rows * self.tileHeight
         
+    def deactivateAll(self):
+        '''Make all areas inactive'''
+        for area in self.subAreas.values():
+            area.active = False
+            
+    def activate(self, area):
+        '''Make an area active and surrounding areas'''
+        self.deactivateAll()
+        area.active = True
+        for val in area.neighbors.values():
+            if val:
+                self.subAreas.active = True
+        
     def divideIntoSubAreas(self, screenWidth, screenHeight):
         '''Divide the area into multiple subareas'''
         rows = self.height / screenHeight
@@ -41,10 +57,11 @@ class AreaAbstract(object):
         numArea = 0
         for row in range(rows):
             for col in range(cols):
-                self.subArea[numArea] = AreaSub()
-                self.subArea[numArea].setDimensions(row, col, screenWidth, screenHeight)
-                self.distributeNodes(self.subArea[numArea])
+                self.subAreas[numArea] = AreaSub()
+                self.subAreas[numArea].setDimensions(row, col, screenWidth, screenHeight)
+                self.distributeNodes(self.subAreas[numArea])
                 numArea += 1
+        self.setNeighbors(rows, cols)
         
     def distributeNodes(self, area):
         '''Distribute the nodes into the subAreas'''
@@ -58,6 +75,20 @@ class AreaAbstract(object):
         for nodeVal in area.nodes.values():
             junk = self.nodes.pop(nodeVal)
                 
+    def setNeighbors(self, rows, cols):
+        '''Set the neighbors for each subArea'''
+        for areaVal in self.subAreas.keys():
+            area = self.subAreas[areaVal]
+            if areaVal - cols >= 0:
+                area.neighbors[NORTH] = areaVal-cols
+            if areaVal + cols < rows*cols:
+                area.neighbors[SOUTH] = areaVal+cols
+            if areaVal - 1 >= 0 and
+               (areaVal-1)/cols == areaVal/cols:
+                area.neighbors[WEST] = areaVal - 1
+            if areaVal + 1 < rows*cols:
+                if (areaVal+1)/cols == areaVal/cols:
+                    area.neighbors[EAST] = areaVal + 1
     
 class Area1(AreaAbstract):
     def __init__(self, width, height):
