@@ -1,7 +1,7 @@
 import pygame
 from entity import Entity
 from world import World
-from areas import Area1
+from areas import Area1, Area2
 
 clock = pygame.time.Clock()
 
@@ -10,7 +10,7 @@ world.setup(25, 25, 16)
 player = Entity()
 world.addPlayer(player)
 
-area = Area1(16, 16)
+area = Area2(16, 16)
 world.loadNewArea(area)
 
 while True:
