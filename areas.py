@@ -21,6 +21,7 @@ class AreaAbstract(object):
         self.width, self.height = (0, 0)
         self.ID = 0
         self.playerStart = 0
+        self.areaStart = 0
         self.nodes = {}
         self.neighbors = {}
         self.entityList = []
@@ -65,7 +66,7 @@ class Area1(AreaAbstract):
         self.load('maze_junk.txt')
         self.playerStart = 2
         
-
+        
 class Area2(AreaAbstract):
     def __init__(self, width, height):
         AreaAbstract.__init__(self, width, height)
