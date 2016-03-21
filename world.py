@@ -43,7 +43,8 @@ class World(object):
         '''An area is an object that defines the nodes and anything
         else that needs to be loaded into the world'''
         self.clearAll()
-        self.addNodes(area.nodes)
+        #self.addNodes(area.nodes)
+        self.addNodes(area.subAreas[self.areaStart].nodes)
         self.player.loadNewNodes(self.nodes, area.playerStart)
         for entity in area.entityList:
             self.addDynamicObject(entity)
