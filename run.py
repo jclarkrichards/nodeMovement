@@ -1,16 +1,16 @@
 import pygame
 from entity import Entity
 from world import World
-from areas import Area1, Area2
+from areas import Area1, Area2, AreaTest
 
 clock = pygame.time.Clock()
 
 world = World()
-world.setup(25, 25, 16)
+world.setup(4, 3, 64)
 player = Entity()
 world.addPlayer(player)
 
-area = Area2(16, 16)
+area = AreaTest(64, 64)
 world.loadNewArea(area)
 
 while True:

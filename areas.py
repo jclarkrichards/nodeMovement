@@ -24,6 +24,18 @@ class Area2(object):
         self.neighbors = {}
         self.entityList = []
 
+
+class AreaTest(object):
+    def __init__(self, width, height):
+        self.ID = 2
+        mapName = 'area_test.txt'
+        self.playerStart = 1
+        nodes = NodeGroup(width, height)
+        nodes.createNodeList(mapName)
+        self.nodes = nodes.nodeDict
+        self.neighbors = {}
+        self.entityList = []
+
         
 
 
