@@ -82,7 +82,18 @@ class World(object):
     
     def render(self):
         self.screen.blit(self.background, (0,0))
-        #draw nodes for testing purposes
+        self.drawNodes()
         self.player.render(self.screen)
         for item in self.dynamicOBJ.values():
             item.render(self.screen)
+
+    def drawNodes(self):
+        '''Really only used for testing purposes'''
+        for node in self.nodes.values():
+            pos1 = node.position.toTuple()
+            for nextnodeVal in node.neighbors.values():
+                pos2 = self.nodes[nextnodeVal].position.toTuple()
+                pygame.draw.line(self.screen, (255,255,255), pos1, pos2, 2)
+        for node in self.nodes.values():
+            pos1 = node.position.toTuple()
+            pygame.draw.circle(self.screen, (255,255,255), pos1, 6)
