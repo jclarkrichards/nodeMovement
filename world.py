@@ -8,6 +8,7 @@ class World(object):
         self.background = None
         self.screen = None
         self.nodes = {}
+        self.activeNodes = {}
         self.ID = 0
         self.mapNeighbors = {}
         self.keyPressed = 0
@@ -39,14 +40,26 @@ class World(object):
     def removeNodes(self):
         self.nodes = {}
         
-    def loadNewArea(self, area):
+    def loadNewArea(self, area, subArea=0):
         '''An area is an object that defines the nodes and anything
         else that needs to be loaded into the world'''
         self.clearAll()
         self.addNodes(area.nodes)
+        #self.activeNodes = area.subAreas[subArea].nodes
+        #self.addNodes(area.subAreas[subArea].nodes)
         self.player.loadNewNodes(self.nodes, area.playerStart)
-        for entity in area.entityList:
-            self.addDynamicObject(entity)
+        self.offsetEntities(area, subArea)
+        #print area.entityList
+        #for entity in area.entityList:
+        #    self.addDynamicObject(entity)
+        
+
+    def offsetEntities(self, area, subArea):
+        for i in self.nodes.keys():
+            node = self.nodes[i]
+            offset = area.subAreas[subArea].entityOffset
+            self.nodes[i].position = node.position - offset
+
         
     def __addObject__(self, database, obj):
         if obj.ID in database.keys():
@@ -96,4 +109,5 @@ class World(object):
                 pygame.draw.line(self.screen, (255,255,255), pos1, pos2, 2)
         for node in self.nodes.values():
             pos1 = node.position.toTuple()
+            pos1 = (int(pos1[0]), int(pos1[1]))
             pygame.draw.circle(self.screen, (255,255,255), pos1, 6)

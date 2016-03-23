@@ -11,7 +11,14 @@ player = Entity()
 world.addPlayer(player)
 
 area = AreaTest(64, 64)
-world.loadNewArea(area)
+
+area.divideIntoSubAreas(*world.screenSize)
+
+for val in area.subAreas.keys():
+    print area.subAreas[val].entityOffset
+#world.loadNewArea(area)
+
+world.loadNewArea(area, 0)
 
 while True:
     world.handleEvents()

@@ -25,16 +25,17 @@ class NodeGroup(object):
         self.layout = None
         self.tileW = tileW
         self.tileH = tileH
+        self.rows, self.cols = (0, 0)
 
     def createNodeList(self, filename):
         '''Create a dictionary of nodes'''
         self.nodeDict = {}
         dt = numpy.dtype((str, 2))
         self.layout = loadtxt(filename, dtype=dt)
-        rows, cols = self.layout.shape
+        self.rows, self.cols = self.layout.shape
 
-        for row in range(rows):
-            for col in range(cols):
+        for row in range(self.rows):
+            for col in range(self.cols):
                 self.createNodeFromLayout(row, col)
                 if self.isPositiveDigit(row, col):
                     self.walkRight(row, col)
