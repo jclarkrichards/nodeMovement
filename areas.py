@@ -94,8 +94,8 @@ class AreaTest(AreaAbstract):
     def __init__(self, width, height):
         AreaAbstract.__init__(self, width, height)
         self.ID = 2
-        self.load('area_test.txt')
-        self.playerStart = 1
+        self.load('area_test2.txt')
+        self.playerStart = 5
 
 
 

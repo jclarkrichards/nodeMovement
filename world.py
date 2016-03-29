@@ -84,7 +84,11 @@ class World(object):
     
     def update(self, dt):
         self.player.move(dt, self.keyPressed)
-    
+        print self.player.velocity
+        for node in self.nodes.values():
+            node.position -= self.player.velocity*dt
+        self.player.position -= self.player.velocity*dt
+        
     def clearDynamicObjects(self):
         self.dynamicOBJ = {}
         

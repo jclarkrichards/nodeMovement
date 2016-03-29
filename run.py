@@ -14,8 +14,8 @@ area = AreaTest(64, 64)
 
 area.divideIntoSubAreas(*world.screenSize)
 
-for val in area.subAreas.keys():
-    print area.subAreas[val].entityOffset
+#for val in area.subAreas.keys():
+#    print area.subAreas[val].entityOffset
 #world.loadNewArea(area)
 
 world.loadNewArea(area, 0)

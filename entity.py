@@ -9,6 +9,7 @@ class Entity(object):
         self.direction = 0
         self.speed = 60
         self.mover = FourWayMovement(self, version=3)
+        self.velocity = Vector2D()
         
     def setID(self, ID):
         self.ID = ID
