@@ -54,7 +54,7 @@ class World(object):
         self.clearAll()
         self.addNodes(area.nodes)
         self.player.loadNewNodes(self.nodes, area.playerStart)
-        self.offsetEntities(area, subArea)
+        #self.offsetEntities(area, subArea)
         self.centerEntities()
         
     def loadTransferArea(self, nodeVal, subAreaVal, areaVal):
@@ -62,7 +62,7 @@ class World(object):
         self.areas[areaVal].reload()
         self.addNodes(self.areas[areaVal].nodes)
         self.player.loadNewNodes(self.nodes, nodeVal)
-        self.offsetEntities(self.areas[areaVal], subAreaVal)
+        #self.offsetEntities(self.areas[areaVal], subAreaVal)
         self.centerEntities()
         self.player.mover.keyDirection = self.player.previousDirection
         self.player.overrideKeys = True
@@ -71,8 +71,8 @@ class World(object):
         self.areaOffset = area.subAreas[subArea].entityOffset
         #print self.areaOffset
         for i in self.nodes.keys():
-            node = self.nodes[i]
-            self.nodes[i].position = node.position - self.areaOffset
+            #node = self.nodes[i]
+            self.nodes[i].position -= self.areaOffset
         self.areaOffset *= -1
         #self.centerEntities()
 
@@ -81,12 +81,11 @@ class World(object):
         x, y = self.screenSize
         centerVec = Vector2D(x/2, y/2)
         offset = centerVec - self.player.position
-        print centerVec, self.player.position, offset
+        #print centerVec, self.player.position, offset
         for i in self.nodes.keys():
-            node = self.nodes[i]
             self.nodes[i].position += offset
         self.player.position += offset
-        print self.player.position
+        #print self.player.position
         
     def __addObject__(self, database, obj):
         if obj.ID in database.keys():
@@ -110,23 +109,18 @@ class World(object):
                 exit()
     
     def update(self, dt):
-        #print self.xScroll, self.yScroll
-        print self.player.position
+        #print self.player.position
         self.player.move(dt, self.keyPressed)
         self.scroll(dt)
         test = self.player.mover.nodes[self.player.mover.node].transfer
-        #print self.player.mover.node, self.player.mover.target
         if self.player.mover.targetOvershot:
-            #print "overshot a target"
             if test:
-                #print "Node is a transfer node"
                 if (self.player.previousDirection not in
                     self.player.mover.nodes[self.player.mover.target].neighbors):
-                    #print "Transfer to next area!"
                     self.loadTransferArea(*test)
-                    print "after loading"
-                    print self.player.position
-                    #print self.nodes[test[0]].position
+                    #print "after loading"
+                    #print self.player.position
+                  
             #print self.player.mover.nodes[self.player.mover.target].neighbors
             #print self.player.previousDirection
             #print "Transfer!"
@@ -165,7 +159,7 @@ class World(object):
         for node in self.nodes.values():
             node.position -= self.player.velocity*dt
         self.player.position -= self.player.velocity*dt
-        
+    """    
     def scrollXAxis(self, dt):
         '''Scroll the screen'''
         for node in self.nodes.values():
@@ -177,7 +171,7 @@ class World(object):
         for node in self.nodes.values():
             node.position.y -= self.player.velocity.y*dt
         self.player.position.y -= self.player.velocity.y*dt
-        
+      
     def adjustXAxis(self):
         '''Scroll the screen'''
         if self.areaOffset.x != 0.0:
@@ -193,7 +187,7 @@ class World(object):
                 node.position.y += self.areaOffset.y
             self.player.position.y += self.areaOffset.y
             self.areaOffset.y = 0.0
-            
+    """        
     def clearDynamicObjects(self):
         self.dynamicOBJ = {}
         
