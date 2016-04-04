@@ -136,9 +136,8 @@ class FourWayMovement(object):
 
     def moveTowardsTarget(self, dt):
         '''Move entity towards the target'''
-        self.entity.velocity = DIRECTIONS[self.entity.direction] * \
-                               self.entity.speed
-        #ds = self.entity.speed*dt
+        direction = DIRECTIONS[self.entity.direction]
+        self.entity.velocity = direction * self.entity.speed
         self.entity.position += self.entity.velocity*dt
 
     def setTarget(self, direction):
