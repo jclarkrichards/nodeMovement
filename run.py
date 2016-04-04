@@ -1,7 +1,7 @@
 import pygame
 from entity import Entity
 from world import World
-from areas import Area1, Area2, AreaTest
+from areas import *
 
 clock = pygame.time.Clock()
 
@@ -11,14 +11,16 @@ player = Entity()
 world.addPlayer(player)
 
 area = AreaTest(64, 64)
-
 area.divideIntoSubAreas(*world.screenSize)
-
+area2 = AreaTest2(64, 64)
+area2.divideIntoSubAreas(*world.screenSize)
+world.addArea(area)
+world.addArea(area2)
 #for val in area.subAreas.keys():
 #    print area.subAreas[val].entityOffset
 #world.loadNewArea(area)
 
-world.loadNewArea(area, 0)
+world.loadStartArea(area, 0)
 
 while True:
     world.handleEvents()

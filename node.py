@@ -18,6 +18,8 @@ class Node(object):
         self.hidden = []
         self.COLOR = (255,255,255)
         self.portal = None
+        self.transfer = ()
+        
 
 class NodeGroup(object):
     def __init__(self, tileW, tileH):
@@ -43,7 +45,7 @@ class NodeGroup(object):
                     self.walkLeft(row, col)
                     self.walkUp(row, col)
 
-        #numpy.savetxt('maze_nodes2.txt', self.layout, fmt='%s')
+        numpy.savetxt('maze_nodes_test2.txt', self.layout, fmt='%s')
         
     def isOutOfBounds(self, row, col):
         '''Check if requested row and column values are out of bounds'''

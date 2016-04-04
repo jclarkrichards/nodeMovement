@@ -18,7 +18,8 @@ class FourWayMovement(object):
         self.entity = entity
         self.version = version
         self.keyDirection = STOP
-
+        self.targetOvershot = False
+        
     def test(self):
         self.setValidDirections()
         if self.version == 3:
@@ -64,8 +65,9 @@ class FourWayMovement(object):
         '''Entity visually moves from node to node, 
         but does not stop on each node'''
         self.moveTowardsTarget(dt)
-        
+        #print self.node
         if self.overshotTarget():
+            self.targetOvershot = True
             self.node = self.target
             #self.portal()
             self.setValidDirections()
@@ -82,6 +84,7 @@ class FourWayMovement(object):
                 self.restOnNode(self.node)
                
         else: #has not overshot target
+            self.targetOvershot = False
             if self.isResting():
                 if self.isValidDirection(self.keyDirection):
                     self.setEntityDirection(self.keyDirection)
@@ -173,6 +176,7 @@ class FourWayMovement(object):
     def restOnNode(self, node):
         '''Set the entity on top of a node and rest'''
         self.placeOnNode(node)
+        self.entity.previousDirection = self.entity.direction
         self.entity.direction = STOP
         
     def isResting(self):

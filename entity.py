@@ -7,9 +7,11 @@ class Entity(object):
         self.ID = 0
         self.position = Vector2D() 
         self.direction = 0
+        self.previousDirection = 0
         self.speed = 60
         self.mover = FourWayMovement(self, version=3)
         self.velocity = Vector2D()
+        self.overrideKeys = False
         
     def setID(self, ID):
         self.ID = ID
@@ -24,9 +26,10 @@ class Entity(object):
         
     def move(self, dt, key_pressed=None):
         '''Move entity around the nodes'''
-        if key_pressed:
+        if key_pressed and not self.overrideKeys:
             self.mover.setKeyDirection(key_pressed)
         self.mover.update(dt)
+        self.overrideKeys = False
 
     def render(self, screen):
         x, y = self.position.toTuple()

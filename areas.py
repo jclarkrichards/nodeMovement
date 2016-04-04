@@ -47,7 +47,6 @@ class AreaAbstract(object):
         rows = self.height / screenH
         cols = self.width / screenW
         numArea = 0
-        #print rows, cols
         for row in range(rows):
             for col in range(cols):
                 self.subAreas[numArea] = SubArea()
@@ -57,6 +56,7 @@ class AreaAbstract(object):
                                                                row*screenH)
                 self.distributeNodes(self.subAreas[numArea])
                 numArea += 1
+                
                 
     def distributeNodes(self, area):
         '''Distribute the nodes into the subAreas'''
@@ -96,9 +96,24 @@ class AreaTest(AreaAbstract):
         self.ID = 2
         self.load('area_test2.txt')
         self.playerStart = 5
+        self.nodes[1].transfer = (27, 4, 1)
 
+    def reload(self):
+        self.load('area_test2.txt')
+        self.nodes[1].transfer = (27, 4, 1)
 
+        
+class AreaTest2(AreaAbstract):
+    def __init__(self, width, height):
+        AreaAbstract.__init__(self, width, height)
+        self.ID = 3
+        self.load('area_test3.txt')
+        self.playerStart = 3
+        self.nodes[27].transfer = (1, 0, 0)
 
+    def reload(self):
+        self.load('area_test3.txt')
+        self.nodes[27].transfer = (1, 0, 0)
         
 
 
