@@ -45,7 +45,7 @@ class NodeGroup(object):
                     self.walkLeft(row, col)
                     self.walkUp(row, col)
 
-        numpy.savetxt('maze_nodes_test2.txt', self.layout, fmt='%s')
+        numpy.savetxt(filename[:-3]+'node_guide.txt', self.layout, fmt='%s')
         
     def isOutOfBounds(self, row, col):
         '''Check if requested row and column values are out of bounds'''
