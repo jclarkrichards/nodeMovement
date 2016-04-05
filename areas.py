@@ -101,7 +101,7 @@ class AreaTest(AreaAbstract):
     def reload(self):
         self.load('area_test2.txt')
         self.nodes[1].transfer = (27, 4, 1)
-
+        self.nodes[21].transfer = (1, 0, 2)
         
 class AreaTest2(AreaAbstract):
     def __init__(self, width, height):
@@ -114,7 +114,20 @@ class AreaTest2(AreaAbstract):
     def reload(self):
         self.load('area_test3.txt')
         self.nodes[27].transfer = (1, 0, 0)
-        
+
+
+class AreaTest3(AreaAbstract):
+    def __init__(self, width, height):
+        AreaAbstract.__init__(self, width, height)
+        self.ID = 3
+        self.load('area_test4.txt')
+        self.playerStart = 3
+        self.nodes[27].transfer = (10, 0, 0)
+
+    def reload(self):
+        self.load('area_test3.txt')
+        self.nodes[1].transfer = (21, 0, 0)
+
 
 
 
