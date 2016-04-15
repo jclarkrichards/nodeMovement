@@ -28,6 +28,5 @@ while True:
     world.handleEvents()
     dt = clock.tick(30) / 1000.0
     world.update(dt)
-    #nodes.render(screen)
     world.render()
     pygame.display.update()

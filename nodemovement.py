@@ -19,6 +19,7 @@ class FourWayMovement(object):
         self.version = version
         self.keyDirection = STOP
         self.targetOvershot = False
+        self.areaPos = Vector2D() #for testing the nodes on area idea
         
     def test(self):
         self.setValidDirections()
@@ -131,13 +132,16 @@ class FourWayMovement(object):
     def overshotTarget(self):
         '''Check if entity has overshot target node'''
         nodeToTarget = self.lengthFromNode(self.nodes[self.target].position)
-        nodeToSelf = self.lengthFromNode(self.entity.position)
+        nodeToSelf = self.lengthFromNode(self.entity.position-self.areaPos)
         return nodeToSelf > nodeToTarget
 
     def moveTowardsTarget(self, dt):
         '''Move entity towards the target'''
         direction = DIRECTIONS[self.entity.direction]
         self.entity.velocity = direction * self.entity.speed
+        #ds = self.entity.velocity*dt
+        #ds.vecRound(1)
+        #self.entity.position += ds
         self.entity.position += self.entity.velocity*dt
 
     def setTarget(self, direction):
@@ -193,7 +197,7 @@ class FourWayMovement(object):
         
     def placeOnNode(self, nodeVal):
         '''Place the entity on top of a node'''
-        self.entity.position = self.nodes[nodeVal].position
+        self.entity.position = self.nodes[nodeVal].position + self.areaPos
         
     def setKeyDirection(self, key):
         '''Set the direction of the key being pressed'''

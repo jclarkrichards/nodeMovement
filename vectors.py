@@ -1,4 +1,5 @@
 import math
+#import numpy as np
 
 class Vector2D(object):
     def __init__(self, x=0.0, y=0.0):
@@ -124,6 +125,11 @@ class Vector2D(object):
         y = self.x * math.sin(rad) + self.y * math.cos(rad)
         self.x = x
         self.y = y
+
+    def vecRound(self, decimal):
+        '''round vector to nearest decimal'''
+        self.x = round(self.x, decimal)
+        self.y = round(self.y, decimal)
 
     def crossproduct(self, vec):
         '''Get cross product between two 2D vectors, only care

@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from vectors import Vector2D
+#import numpy as np
 
 class World(object):
     def __init__(self):
@@ -19,6 +20,8 @@ class World(object):
         self.xScroll = True
         self.yScroll = True
         self.areas = []
+        self.areaSurface = None
+        self.surfacePos = Vector2D()
         
     def setup(self, x, y, tileSize=1):
         '''Set the width and height and size of each tile'''
@@ -55,6 +58,8 @@ class World(object):
         self.addNodes(area.nodes)
         self.player.loadNewNodes(self.nodes, area.playerStart)
         #self.offsetEntities(area, subArea)
+        self.areaSurface = pygame.Surface(area.size)
+        self.areaSurface.fill((100,20,30))
         self.centerEntities()
         
     def loadTransferArea(self, nodeVal, subAreaVal, areaVal):
@@ -63,17 +68,19 @@ class World(object):
         self.addNodes(self.areas[areaVal].nodes)
         self.player.loadNewNodes(self.nodes, nodeVal)
         #self.offsetEntities(self.areas[areaVal], subAreaVal)
+        self.areaSurface = pygame.Surface(self.areas[areaVal].size)
+        self.areaSurface.fill((100,20,30))
         self.centerEntities()
         self.player.mover.keyDirection = self.player.previousDirection
         self.player.overrideKeys = True
 
-    def offsetEntities(self, area, subArea):
-        self.areaOffset = area.subAreas[subArea].entityOffset
+    #def offsetEntities(self, area, subArea):
+    #    self.areaOffset = area.subAreas[subArea].entityOffset
+    #    self.surfacePos -= self.areaOffset
         #print self.areaOffset
-        for i in self.nodes.keys():
-            #node = self.nodes[i]
-            self.nodes[i].position -= self.areaOffset
-        self.areaOffset *= -1
+        #for i in self.nodes.keys():
+            #self.nodes[i].position -= self.areaOffset
+    #    self.areaOffset *= -1
         #self.centerEntities()
 
     def centerEntities(self):
@@ -81,11 +88,11 @@ class World(object):
         x, y = self.screenSize
         centerVec = Vector2D(x/2, y/2)
         offset = centerVec - self.player.position
-        #print centerVec, self.player.position, offset
-        for i in self.nodes.keys():
-            self.nodes[i].position += offset
-        self.player.position += offset
-        #print self.player.position
+
+        #for i in self.nodes.keys():
+        #    self.nodes[i].position += offset
+        self.surfacePos += offset
+        #self.player.position += offset
         
     def __addObject__(self, database, obj):
         if obj.ID in database.keys():
@@ -109,8 +116,10 @@ class World(object):
                 exit()
     
     def update(self, dt):
-        #print self.player.position
+        self.player.mover.areaPos = self.surfacePos
         self.player.move(dt, self.keyPressed)
+        #print self.player.position, self.surfacePos
+        #print self.nodes[5].position
         self.scroll(dt)
         test = self.player.mover.nodes[self.player.mover.node].transfer
         if self.player.mover.targetOvershot:
@@ -146,7 +155,7 @@ class World(object):
         else:
             self.xScroll = True
             self.areaOffset.x += self.player.velocity.x*dt
-            
+v            
         if self.areaOffset.y < 0:
             self.yScroll = False
             self.adjustYAxis()
@@ -156,9 +165,13 @@ class World(object):
         '''
     def scroll(self, dt):
         '''Scroll the screen'''
-        for node in self.nodes.values():
-            node.position -= self.player.velocity*dt
+        #ds = self.player.velocity*dt
+        #ds.vecRound(1)
+        self.surfacePos -= self.player.velocity*dt
+        #for node in self.nodes.values():
+        #    node.position -= self.player.velocity*dt
         self.player.position -= self.player.velocity*dt
+        #print self.player.position, self.surfacePos
     """    
     def scrollXAxis(self, dt):
         '''Scroll the screen'''
@@ -198,19 +211,22 @@ class World(object):
     
     def render(self):
         self.screen.blit(self.background, (0,0))
-        self.drawNodes()
+        self.screen.blit(self.areaSurface, self.surfacePos.toTuple())
+        self.drawNodes(self.areaSurface)
         self.player.render(self.screen)
-        for item in self.dynamicOBJ.values():
-            item.render(self.screen)
+        #for item in self.dynamicOBJ.values():
+        #    item.render(self.screen)
 
-    def drawNodes(self):
+    def drawNodes(self, surface):
         '''Really only used for testing purposes'''
         for node in self.nodes.values():
             pos1 = node.position.toTuple()
             for nextnodeVal in node.neighbors.values():
                 pos2 = self.nodes[nextnodeVal].position.toTuple()
-                pygame.draw.line(self.screen, (255,255,255), pos1, pos2, 2)
+                pygame.draw.line(surface, (255,255,255), pos1, pos2, 2)
+                #pygame.draw.line(self.screen, (255,255,255), pos1, pos2, 2)
         for node in self.nodes.values():
             pos1 = node.position.toTuple()
             pos1 = (int(pos1[0]), int(pos1[1]))
-            pygame.draw.circle(self.screen, (255,255,255), pos1, 6)
+            pygame.draw.circle(surface, (255,255,255), pos1, 6)
+            #pygame.draw.circle(self.screen, (255,255,255), pos1, 6)

@@ -26,6 +26,7 @@ class AreaAbstract(object):
     def __init__(self, width, height):
         self.tileWidth, self.tileHeight = width, height
         self.width, self.height = (0, 0)
+        self.size = (0, 0)
         self.ID = 0
         self.playerStart = 1
         self.areaStart = 0
@@ -33,15 +34,15 @@ class AreaAbstract(object):
         self.neighbors = {}
         self.entityList = []
         self.subAreas = {}
-
+        
     def load(self, mapName):
         nodes = NodeGroup(self.tileWidth, self.tileHeight)
         nodes.createNodeList(mapName)
         self.nodes = nodes.nodeDict
         self.width = nodes.cols * self.tileWidth
         self.height = nodes.rows * self.tileHeight
-        #print self.width, self.height
-
+        self.size = (self.width, self.height)
+        
     def divideIntoSubAreas(self, screenW, screenH):
         '''Divide the area into multiple subAreas the size of the screen'''
         rows = self.height / screenH
