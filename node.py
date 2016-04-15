@@ -19,6 +19,8 @@ class Node(object):
         self.COLOR = (255,255,255)
         self.portal = None
         self.transfer = ()
+        self.occupied = False
+        self.action = None
         
 
 class NodeGroup(object):
@@ -44,9 +46,9 @@ class NodeGroup(object):
                     self.walkDown(row, col)
                     self.walkLeft(row, col)
                     self.walkUp(row, col)
+                    
+        self.saveNodeLayout(filename)            
 
-        numpy.savetxt('maze_nodes_test2.txt', self.layout, fmt='%s')
-        
     def isOutOfBounds(self, row, col):
         '''Check if requested row and column values are out of bounds'''
         if row >= 0 and col >= 0:
@@ -174,8 +176,14 @@ class NodeGroup(object):
         if not self.isOutOfBounds(row-dy, col):
             self.createNodeFromLayout(row-dy, col)
             self.linkNodes(row, col, row-dy, col)
+            
+    def saveNodeLayout(self, filename):
+        '''Save the text file so you can see how the nodes are numbered'''
+        base = filename.split('.')[0]
+        numpy.savetxt(base+'node_guide.txt', self.layout, fmt='%s')
 
     def render(self, screen):
+        '''Draw the nodes for testing purposes'''
         for node in self.nodeDict.values():
             pos1 = node.position.toTuple()
             for nextnodeVal in node.neighbors.values():
