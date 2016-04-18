@@ -180,7 +180,7 @@ class NodeGroup(object):
     def saveNodeLayout(self, filename):
         '''Save the text file so you can see how the nodes are numbered'''
         base = filename.split('.')[0]
-        numpy.savetxt(base+'node_guide.txt', self.layout, fmt='%s')
+        numpy.savetxt(base+'_node_guide.txt', self.layout, fmt='%s')
 
     def render(self, screen):
         '''Draw the nodes for testing purposes'''
