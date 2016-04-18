@@ -8,6 +8,7 @@ clock = pygame.time.Clock()
 world = World()
 world.setup(4, 3, 64)
 player = Entity()
+player.setMoverMinDistance(world.tileSize)
 world.addPlayer(player)
 
 area = AreaTest(64, 64)
