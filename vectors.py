@@ -136,3 +136,15 @@ class Vector2D(object):
         about sign'''
         return self.x*vec.y - self.y*vec.x
         
+    def roundToNearest(self, val):
+        '''Round to the nearest multiple of val'''
+        x = round(self.x/val)*val
+        y = round(self.y/val)*val
+        return Vector2D(x, y)
+        
+    def diffToNearest(self, val):
+        '''Return the amount to adjust in order to get to 
+        nearest multiple of val'''
+        vec = self.roundToNearest(val)
+        return vec - self
+        
