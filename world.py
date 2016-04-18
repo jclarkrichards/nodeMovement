@@ -25,7 +25,7 @@ class World(object):
         
     def setup(self, x, y, tileSize=1):
         '''Set the width and height and size of each tile'''
-        self.tileSize = tileSize
+        self.tileSize = float(tileSize)
         pygame.init()
         self.screen = self.setScreenSize(x*tileSize, y*tileSize)
         self.setBackground()
