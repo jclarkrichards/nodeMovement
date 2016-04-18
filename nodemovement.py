@@ -204,7 +204,7 @@ class FourWayMovement(object):
     def placeOnNode(self, nodeVal):
         '''Place the entity on top of a node'''
         p = self.nodes[nodeVal].position + self.areaPos
-        ds = p.roundToNearest(64.0)
+        ds = p.diffToNearest(64.0)
         self.entity.position += ds
         self.areaPos += ds
         #dx = round(p.x/64.0)*64.0 - p.x
