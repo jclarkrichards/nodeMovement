@@ -203,7 +203,18 @@ class FourWayMovement(object):
         
     def placeOnNode(self, nodeVal):
         '''Place the entity on top of a node'''
-        self.entity.position = self.nodes[nodeVal].position + self.areaPos
+        p = self.nodes[nodeVal].position + self.areaPos
+        ds = p.roundToNearest(64.0)
+        self.entity.position += ds
+        self.areaPos += ds
+        #dx = round(p.x/64.0)*64.0 - p.x
+        #dy = round(p.y/64.0)*64.0 - p.y
+        #self.position.x += dx
+        #self.position.y += dy
+        #self.areaPos.y += dx
+        #self.areaPos.y += dy
+        #self.entity.position = p.roundToNearest(64.0)
+        #self.entity.position = self.nodes[nodeVal].position + self.areaPos
         
     def setKeyDirection(self, key):
         '''Set the direction of the key being pressed'''
