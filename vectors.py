@@ -19,6 +19,10 @@ class Vector2D(object):
     def toTuple(self):
         '''Returns the vector as a tuple'''
         return (self.x, self.y)
+        
+    def toList(self):
+        '''Returns the vector as a list'''
+        return [self.x, self.y]
 
     @staticmethod
     def deg_to_rad(degree):
@@ -135,6 +139,11 @@ class Vector2D(object):
         '''Get cross product between two 2D vectors, only care
         about sign'''
         return self.x*vec.y - self.y*vec.x
+        
+    def round(self):
+        '''Round values of x and y'''
+        self.x = round(self.x)
+        self.y = round(self.y)
         
     def roundToNearest(self, val):
         '''Round to the nearest multiple of val'''
