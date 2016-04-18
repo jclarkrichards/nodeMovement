@@ -129,6 +129,12 @@ class FourWayMovement(object):
         vec = vector - self.nodes[self.node].position
         return vec.magnitudeSquared()
 
+    def currentNode(self):
+        return self.nodes[self.node]
+
+    def currentTarget(self):
+        return self.nodes[self.target]
+    
     def overshotTarget(self):
         '''Check if entity has overshot target node'''
         nodeToTarget = self.lengthFromNode(self.nodes[self.target].position)

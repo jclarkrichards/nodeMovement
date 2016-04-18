@@ -118,24 +118,20 @@ class World(object):
     def update(self, dt):
         self.player.mover.areaPos = self.surfacePos
         self.player.move(dt, self.keyPressed)
-        #print self.player.position, self.surfacePos
-        #print self.nodes[5].position
+        node = self.player.mover.currentNode()
+        target = self.player.mover.currentTarget()
         self.scroll(dt)
-        test = self.player.mover.nodes[self.player.mover.node].transfer
-        if self.player.mover.targetOvershot:
-            if test:
-                if (self.player.previousDirection not in
-                    self.player.mover.nodes[self.player.mover.target].neighbors):
-                    self.loadTransferArea(*test)
-                    #print "after loading"
-                    #print self.player.position
-                  
-            #print self.player.mover.nodes[self.player.mover.target].neighbors
-            #print self.player.previousDirection
-            #print "Transfer!"
-            print ""
-            #self.loadTransferArea(*test)
+        self.loadArea(node, target)
 
+    def loadArea(self, node, target):
+        '''Loads a new area if conditions are right'''
+        if self.player.mover.targetOvershot:
+            if node.transfer: 
+                if (self.player.previousDirection not in
+                    target.neighbors):
+                    self.loadTransferArea(*node.transfer)
+
+                  
         '''
         if self.xScroll and self.yScroll:
             self.scroll(dt)
