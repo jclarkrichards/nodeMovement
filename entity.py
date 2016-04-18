@@ -31,6 +31,9 @@ class Entity(object):
         self.mover.update(dt)
         self.overrideKeys = False
 
+    def setMoverMinDistance(self, tilesize):
+        self.mover.setMindDistance(tilesize)
+        
     def render(self, screen):
         x, y = self.position.toTuple()
         pygame.draw.circle(screen, (200,200,0), (int(x), int(y)), 8)
