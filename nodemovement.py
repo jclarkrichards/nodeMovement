@@ -7,7 +7,7 @@ DIRECTIONS = {UP:Vector2D(0,-1), DOWN:Vector2D(0,1),
               LEFT:Vector2D(-1,0), RIGHT:Vector2D(1,0), STOP:Vector2D()}
 
 class FourWayMovement(object):
-    def __init__(self, entity, tilesize version=1):
+    def __init__(self, entity, version=1):
         '''nodes is the dictionary of all nodes.  
         nodeVal is the value of the starting node.
         entity is the Entity that moves around the nodes.
@@ -20,7 +20,11 @@ class FourWayMovement(object):
         self.keyDirection = STOP
         self.targetOvershot = False
         self.areaPos = Vector2D() #for testing the nodes on area idea
-        self.minDistance = tilesize #minimum distance between nodes
+        self.minDistance = 0
+        
+    def setMinDistance(self, tilesize):
+        '''Minimum distance between nodes'''
+        self.minDistance = tilesize
         
     def test(self):
         self.setValidDirections()
@@ -205,9 +209,14 @@ class FourWayMovement(object):
     def placeOnNode(self, nodeVal):
         '''Place the entity on top of a node'''
         p = self.nodes[nodeVal].position + self.areaPos
-        ds = p.diffToNearest(self.minDistance)
-        self.entity.position += ds
+        #self.entity.position = p
+        if self.minDistance > 0:
+            ds = p.diffToNearest(self.minDistance)
+        else:
+            ds = Vector2D()
+        #self.entity.position += ds
         self.areaPos += ds
+        self.entity.position = self.nodes[nodeVal].position + self.areaPos
         #dx = round(p.x/64.0)*64.0 - p.x
         #dy = round(p.y/64.0)*64.0 - p.y
         #self.position.x += dx
