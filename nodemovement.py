@@ -94,6 +94,8 @@ class FourWayMovement(object):
             if self.isResting():
                 if self.isValidDirection(self.keyDirection):
                     self.setEntityDirection(self.keyDirection)
+                else:
+                    self.entity.facingDirection = self.keyDirection
             else:
                 if self.keyDirection == self.entity.direction*-1:
                     self.reverseDirection()
@@ -121,6 +123,7 @@ class FourWayMovement(object):
     def setEntityDirection(self, direction):
         '''Set valid directions when in between nodes'''
         self.entity.direction = direction
+        self.entity.facingDirection = direction
         self.setTarget(direction)
         self.validDirections = [direction, direction*-1]
         
@@ -159,6 +162,7 @@ class FourWayMovement(object):
         self.target = self.node
         self.node = temp
         self.entity.direction *= -1
+        self.entity.facingDirection *= -1
 
     def removeOppositeDirection(self):
         '''Remove opposite direction only if there are other 
