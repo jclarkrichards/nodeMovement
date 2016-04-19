@@ -8,6 +8,7 @@ class Entity(object):
         self.position = Vector2D() 
         self.direction = 0
         self.previousDirection = 0
+        self.facingDirection = 0
         self.speed = 60
         self.mover = FourWayMovement(self, version=3)
         self.velocity = Vector2D()
