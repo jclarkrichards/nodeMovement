@@ -2,6 +2,7 @@ import pygame
 from vectors import Vector2D
 from numpy import loadtxt
 import numpy
+import os
 "testing"
 UP = 1
 DOWN = -1
@@ -13,6 +14,7 @@ DIRECTIONS = {UP:Vector2D(0,-1), DOWN:Vector2D(0,1),
 
 class Node(object):
     def __init__(self, pos):
+        self.ID = 0
         self.position = Vector2D(pos)
         self.neighbors = {}
         self.hidden = []
@@ -35,7 +37,11 @@ class NodeGroup(object):
         '''Create a dictionary of nodes'''
         self.nodeDict = {}
         dt = numpy.dtype((str, 2))
+        oldDir = os.getcwd()
+        newDir = oldDir + '\\TextFiles'
+        os.chdir(newDir)
         self.layout = loadtxt(filename, dtype=dt)
+        os.chdir(oldDir)
         self.rows, self.cols = self.layout.shape
 
         for row in range(self.rows):
@@ -69,7 +75,10 @@ class NodeGroup(object):
                 nodeNum = 0
             finally:
                 nodeNum += 1
-                self.nodeDict[nodeNum] = Node((col*self.tileW, row*self.tileH))
+                x = float(col*self.tileW)
+                y = float(row*self.tileH)
+                self.nodeDict[nodeNum] = Node((x, y))
+                self.nodeDict[nodeNum].ID = nodeNum
                 self.layout[row][col] = str(nodeNum)
 
     def isPositiveDigit(self, row, col):
@@ -180,7 +189,11 @@ class NodeGroup(object):
     def saveNodeLayout(self, filename):
         '''Save the text file so you can see how the nodes are numbered'''
         base = filename.split('.')[0]
+        oldDir = os.getcwd()
+        newDir = oldDir + '\\TextFiles\\LevelGuides'
+        os.chdir(newDir)
         numpy.savetxt(base+'_node_guide.txt', self.layout, fmt='%s')
+        os.chdir(oldDir)
 
     def render(self, screen):
         '''Draw the nodes for testing purposes'''

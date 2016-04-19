@@ -57,42 +57,33 @@ class World(object):
         self.clearAll()
         self.addNodes(area.nodes)
         self.player.loadNewNodes(self.nodes, area.playerStart)
-        #self.offsetEntities(area, subArea)
         self.areaSurface = pygame.Surface(area.size)
         self.areaSurface.fill((100,20,30))
         self.centerEntities()
         
-    def loadTransferArea(self, nodeVal, subAreaVal, areaVal):
+    def loadTransferArea(self, nodeVal, areaVal):
         self.clearAll()
         self.areas[areaVal].reload()
         self.addNodes(self.areas[areaVal].nodes)
         self.player.loadNewNodes(self.nodes, nodeVal)
-        #self.offsetEntities(self.areas[areaVal], subAreaVal)
         self.areaSurface = pygame.Surface(self.areas[areaVal].size)
         self.areaSurface.fill((100,20,30))
         self.centerEntities()
         self.player.mover.keyDirection = self.player.previousDirection
         self.player.overrideKeys = True
 
-    #def offsetEntities(self, area, subArea):
-    #    self.areaOffset = area.subAreas[subArea].entityOffset
-    #    self.surfacePos -= self.areaOffset
-        #print self.areaOffset
-        #for i in self.nodes.keys():
-            #self.nodes[i].position -= self.areaOffset
-    #    self.areaOffset *= -1
-        #self.centerEntities()
-
     def centerEntities(self):
         '''Center the player and adjust the other entities'''
         x, y = self.screenSize
         centerVec = Vector2D(x/2, y/2)
+        #print self.player.position
         offset = centerVec - self.player.position
-
+        #print offset
         #for i in self.nodes.keys():
         #    self.nodes[i].position += offset
         self.surfacePos += offset
-        #self.player.position += offset
+        self.player.position += offset
+        #print centerVec, self.surfacePos, self.player.position
         
     def __addObject__(self, database, obj):
         if obj.ID in database.keys():
@@ -116,17 +107,21 @@ class World(object):
                 exit()
     
     def update(self, dt):
+        self.scroll(dt)
         self.player.mover.areaPos = self.surfacePos
         self.player.move(dt, self.keyPressed)
+        self.surfacePos = self.player.mover.areaPos
         node = self.player.mover.currentNode()
         target = self.player.mover.currentTarget()
-        self.scroll(dt)
+        print node.ID, target.ID
+        #self.scroll(dt)
         self.loadArea(node, target)
 
     def loadArea(self, node, target):
         '''Loads a new area if conditions are right'''
         if self.player.mover.targetOvershot:
-            if node.transfer: 
+            if node.transfer:
+                print node.transfer
                 if (self.player.previousDirection not in
                     target.neighbors):
                     self.loadTransferArea(*node.transfer)
@@ -161,12 +156,11 @@ v
         '''
     def scroll(self, dt):
         '''Scroll the screen'''
-        #ds = self.player.velocity*dt
-        #ds.vecRound(1)
         self.surfacePos -= self.player.velocity*dt
+        #print self.surfacePos
         #for node in self.nodes.values():
         #    node.position -= self.player.velocity*dt
-        self.player.position -= self.player.velocity*dt
+        #self.player.position -= self.player.velocity*dt
         #print self.player.position, self.surfacePos
     """    
     def scrollXAxis(self, dt):
@@ -207,6 +201,9 @@ v
     
     def render(self):
         self.screen.blit(self.background, (0,0))
+
+        #print self.surfacePos
+        #print ''
         self.screen.blit(self.areaSurface, self.surfacePos.toTuple())
         self.drawNodes(self.areaSurface)
         self.player.render(self.screen)
