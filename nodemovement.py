@@ -18,7 +18,15 @@ class FourWayMovement(object):
         self.entity = entity
         self.version = version
         self.keyDirection = STOP
-
+        self.targetOvershot = False
+        self.areaPos = Vector2D() #for testing the nodes on area idea
+        self.minDistance = 0
+        self.entity.facingDirection = LEFT
+        
+    def setMinDistance(self, tilesize):
+        '''Minimum distance between nodes'''
+        self.minDistance = tilesize
+        
     def test(self):
         self.setValidDirections()
         if self.version == 3:
@@ -40,7 +48,8 @@ class FourWayMovement(object):
             self.__updateVersion2__(dt)
         elif self.version == 3:
             self.__updateVersion3__(dt)
-            
+        #print self.node, self.target
+        
     def __updateVersion1__(self, dt):
         '''Entity jumps from node to node.  
         No visual movement.'''
@@ -64,10 +73,9 @@ class FourWayMovement(object):
         '''Entity visually moves from node to node, 
         but does not stop on each node'''
         self.moveTowardsTarget(dt)
-        
         if self.overshotTarget():
+            self.targetOvershot = True
             self.node = self.target
-            #self.portal()
             self.setValidDirections()
 
             if self.keyDirection:# if a key is being pressed
@@ -77,47 +85,67 @@ class FourWayMovement(object):
                     else:#is in the same direction
                         self.setTarget(self.entity.direction)
                 else: #key direction not in valid directions
-                    self.checkCurrentDirection()
+                    #self.checkCurrentDirection()
+                    self.restOnNode(self.node)
             else: #key not being pressed
                 self.restOnNode(self.node)
                
         else: #has not overshot target
+            self.targetOvershot = False
             if self.isResting():
                 if self.isValidDirection(self.keyDirection):
                     self.setEntityDirection(self.keyDirection)
+                else:
+                    if self.keyDirection:
+                        self.entity.facingDirection = self.keyDirection
             else:
                 if self.keyDirection == self.entity.direction*-1:
                     self.reverseDirection()
           
-    #def setValidNodeVals(self, nodeVal):
-    #    '''Set the valid node values that the entity is allowed to move'''
-    #    self.validValues = self.nodes[nodeVal].neighbors.values()
-    #    for val in self.nodes[nodeVal].hidden:
-    #        if val in self.validValues:
-    #            self.validValues.remove(val)
-        
     def setValidDirections(self):
         '''Set the valid directions that the entity is allowed to move'''
         self.validDirections = self.nodes[self.node].neighbors.keys()
         self.removeHiddenNodes()
+        self.removeOccupiedNodes()
         
     def removeHiddenNodes(self):
         '''If a node is defined as hidden, then remove from valid directions'''
         for nodeVal in self.nodes[self.node].hidden:
             for direction in self.nodes[self.node].neighbors.keys():
                 if self.nodes[self.node].neighbors[direction] == nodeVal:
-                    try:
-                        self.validDirections.remove(direction)
-                    except ValueError:
-                        pass
-                      
-    def getNeighborValue(self, node, direction):
+                    self.removeDirection(direction)
+
+    def removeOccupiedNodes(self):
+        '''If a node is occupied with another object, remove it'''
+        for direction in self.nodes[self.node].neighbors.keys():
+            node = self.getNeighborNode(direction)
+            if node.occupied:
+                self.removeDirection(direction)
+
+    def removeDirection(self, direction):
+        try:
+            self.validDirections.remove(direction)
+        except ValueError:
+            pass
+
+    def getNeighborNode(self, direction):
+        '''Return Node object of current nodes neighbor'''
+        try:
+            return self.nodes[self.getNeighborValue(direction)]
+        except KeyError:
+            return None
+    
+    def getNeighborValue(self, direction):
         '''Return the value of a neighbor in a direction'''
-        return self.nodes[node].neighbors[direction]
+        try:
+            return self.nodes[self.node].neighbors[direction]
+        except KeyError:
+            return None
     
     def setEntityDirection(self, direction):
         '''Set valid directions when in between nodes'''
         self.entity.direction = direction
+        self.entity.facingDirection = direction
         self.setTarget(direction)
         self.validDirections = [direction, direction*-1]
         
@@ -125,16 +153,26 @@ class FourWayMovement(object):
         vec = vector - self.nodes[self.node].position
         return vec.magnitudeSquared()
 
+    def currentNode(self):
+        return self.nodes[self.node]
+
+    def currentTarget(self):
+        return self.nodes[self.target]
+    
     def overshotTarget(self):
         '''Check if entity has overshot target node'''
         nodeToTarget = self.lengthFromNode(self.nodes[self.target].position)
-        nodeToSelf = self.lengthFromNode(self.entity.position)
-        return nodeToSelf > nodeToTarget
+        nodeToSelf = self.lengthFromNode(self.entity.position-self.areaPos)
+        return nodeToSelf > nodeToTarget and self.node != self.target
 
     def moveTowardsTarget(self, dt):
         '''Move entity towards the target'''
-        ds = self.entity.speed*dt
-        self.entity.position += DIRECTIONS[self.entity.direction]*ds
+        self.updateEntityVelocity()
+        #self.entity.position += self.entity.velocity*dt
+
+    def updateEntityVelocity(self):
+        direction = DIRECTIONS[self.entity.direction]
+        self.entity.velocity = direction * self.entity.speed
 
     def setTarget(self, direction):
         '''Set a new target based on the direction'''
@@ -146,6 +184,7 @@ class FourWayMovement(object):
         self.target = self.node
         self.node = temp
         self.entity.direction *= -1
+        self.entity.facingDirection *= -1
 
     def removeOppositeDirection(self):
         '''Remove opposite direction only if there are other 
@@ -171,7 +210,9 @@ class FourWayMovement(object):
     def restOnNode(self, node):
         '''Set the entity on top of a node and rest'''
         self.placeOnNode(node)
+        self.entity.previousDirection = self.entity.direction
         self.entity.direction = STOP
+        self.updateEntityVelocity()
         
     def isResting(self):
         '''Return True if entity is at rest'''
@@ -183,13 +224,16 @@ class FourWayMovement(object):
         
     def changeDirection(self):
         '''Change entities direction'''
-        self.placeOnNode(self.node)
+        self.restOnNode(self.node)
         self.setEntityDirection(self.keyDirection)
         
     def placeOnNode(self, nodeVal):
         '''Place the entity on top of a node'''
-        self.entity.position = self.nodes[nodeVal].position
-        
+        test = self.nodes[nodeVal].position + self.areaPos
+        ds = test.diffToNearest(16)
+        self.areaPos += ds
+        self.entity.position = self.nodes[nodeVal].position + self.areaPos
+
     def setKeyDirection(self, key):
         '''Set the direction of the key being pressed'''
         if key[K_UP]:

@@ -1,0 +1,49 @@
+import pygame
+from pygame.locals import *
+from player import Player
+from world import World
+from areas import *
+
+
+class Game(object):
+    def __init__(self):
+        self.clock = pygame.time.Clock()
+        self.world = World()
+        self.world.setup(4, 3, 64)
+        self.player = Player()
+        self.world.addPlayer(self.player)
+        area = AreaTest(64, 64)
+        area2 = AreaTest2(64, 64)
+        area3 = AreaTest3(64, 64)
+        self.world.addArea(area)
+        self.world.addArea(area2)
+        self.world.addArea(area3)
+        self.world.loadStartArea(area)
+        self.keyPressed = None
+        
+    def controls(self):
+        self.keyPressed = pygame.key.get_pressed()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                self.quitGame()
+            elif event.type == KEYDOWN:
+                if event.key == K_SPACE: #Action key
+                    d = self.player.facingDirection
+                    print self.player.mover.getNeighborNode(d)
+
+    def quitGame(self):
+        '''Quit the game'''
+        exit()
+        
+    def gameLoop(self):
+        while True:
+            dt = self.clock.tick(30) / 1000.0
+            self.controls()
+            self.world.update(dt, self.keyPressed)
+            self.world.render()
+            pygame.display.update()
+
+
+if __name__ == '__main__':
+    game = Game()
+    game.gameLoop()
