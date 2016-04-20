@@ -101,7 +101,8 @@ class AreaTest(AreaAbstract):
         self.playerStart = 5
         self.nodes[1].transfer = (27, 1)
         self.nodes[21].transfer = (1, 2)
-
+        self.nodes[3].occupied = True #for testing occupancy
+        
     def reload(self):
         self.load('area_test2.txt')
         self.nodes[1].transfer = (27, 1)

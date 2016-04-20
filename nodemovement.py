@@ -21,6 +21,7 @@ class FourWayMovement(object):
         self.targetOvershot = False
         self.areaPos = Vector2D() #for testing the nodes on area idea
         self.minDistance = 0
+        self.entity.facingDirection = LEFT
         
     def setMinDistance(self, tilesize):
         '''Minimum distance between nodes'''
@@ -95,30 +96,51 @@ class FourWayMovement(object):
                 if self.isValidDirection(self.keyDirection):
                     self.setEntityDirection(self.keyDirection)
                 else:
-                    self.entity.facingDirection = self.keyDirection
+                    if self.keyDirection:
+                        self.entity.facingDirection = self.keyDirection
             else:
                 if self.keyDirection == self.entity.direction*-1:
                     self.reverseDirection()
           
-        
     def setValidDirections(self):
         '''Set the valid directions that the entity is allowed to move'''
         self.validDirections = self.nodes[self.node].neighbors.keys()
         self.removeHiddenNodes()
+        self.removeOccupiedNodes()
         
     def removeHiddenNodes(self):
         '''If a node is defined as hidden, then remove from valid directions'''
         for nodeVal in self.nodes[self.node].hidden:
             for direction in self.nodes[self.node].neighbors.keys():
                 if self.nodes[self.node].neighbors[direction] == nodeVal:
-                    try:
-                        self.validDirections.remove(direction)
-                    except ValueError:
-                        pass
-                      
-    def getNeighborValue(self, node, direction):
+                    self.removeDirection(direction)
+
+    def removeOccupiedNodes(self):
+        '''If a node is occupied with another object, remove it'''
+        for direction in self.nodes[self.node].neighbors.keys():
+            node = self.getNeighborNode(direction)
+            if node.occupied:
+                self.removeDirection(direction)
+
+    def removeDirection(self, direction):
+        try:
+            self.validDirections.remove(direction)
+        except ValueError:
+            pass
+
+    def getNeighborNode(self, direction):
+        '''Return Node object of current nodes neighbor'''
+        try:
+            return self.nodes[self.getNeighborValue(direction)]
+        except KeyError:
+            return None
+    
+    def getNeighborValue(self, direction):
         '''Return the value of a neighbor in a direction'''
-        return self.nodes[node].neighbors[direction]
+        try:
+            return self.nodes[self.node].neighbors[direction]
+        except KeyError:
+            return None
     
     def setEntityDirection(self, direction):
         '''Set valid directions when in between nodes'''

@@ -1,5 +1,5 @@
 import pygame
-from pygame.locals import *
+#from pygame.locals import *
 from vectors import Vector2D
 #import numpy as np
 
@@ -13,7 +13,6 @@ class World(object):
         self.activeNodes = {}
         self.ID = 0
         self.mapNeighbors = {}
-        self.keyPressed = 0
         self.dynamicOBJ = {}
         self.player = None
         self.areaOffset = Vector2D()
@@ -51,7 +50,7 @@ class World(object):
     def removeNodes(self):
         self.nodes = {}
         
-    def loadStartArea(self, area, subArea=0):
+    def loadStartArea(self, area):
         '''An area is an object that defines the nodes and anything
         else that needs to be loaded into the world'''
         self.clearAll()
@@ -76,14 +75,11 @@ class World(object):
         '''Center the player and adjust the other entities'''
         x, y = self.screenSize
         centerVec = Vector2D(x/2, y/2)
-        #print self.player.position
         offset = centerVec - self.player.position
-        #print offset
         #for i in self.nodes.keys():
         #    self.nodes[i].position += offset
         self.surfacePos += offset
         self.player.position += offset
-        #print centerVec, self.surfacePos, self.player.position
         
     def __addObject__(self, database, obj):
         if obj.ID in database.keys():
@@ -99,29 +95,22 @@ class World(object):
     def addDynamicObject(self, obj):
         self.__addObject__(self.dynamicOBJ, obj)
     
-    def handleEvents(self):
-        '''Checks for key presses, mouse clicks, etc...'''
-        self.keyPressed = pygame.key.get_pressed()
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                exit()
-    
-    def update(self, dt):
+    def update(self, dt, key):
         self.scroll(dt)
         self.player.mover.areaPos = self.surfacePos
-        self.player.move(dt, self.keyPressed)
+        self.player.move(dt, key)
         self.surfacePos = self.player.mover.areaPos
         node = self.player.mover.currentNode()
         target = self.player.mover.currentTarget()
-        print node.ID, target.ID
-        #self.scroll(dt)
+        #print node.ID, target.ID
         self.loadArea(node, target)
+        #print self.player.facingDirection
 
     def loadArea(self, node, target):
         '''Loads a new area if conditions are right'''
         if self.player.mover.targetOvershot:
             if node.transfer:
-                print node.transfer
+                #print node.transfer
                 if (self.player.previousDirection not in
                     target.neighbors):
                     self.loadTransferArea(*node.transfer)
@@ -201,9 +190,6 @@ v
     
     def render(self):
         self.screen.blit(self.background, (0,0))
-
-        #print self.surfacePos
-        #print ''
         self.screen.blit(self.areaSurface, self.surfacePos.toTuple())
         self.drawNodes(self.areaSurface)
         self.player.render(self.screen)
