@@ -7,15 +7,23 @@ class Entity(object):
         self.ID = 0
         self.position = Vector2D() 
         self.direction = 0
+        self.facingDirection = 0
         self.speed = 60
         self.velocity = Vector2D()
-        self.info =''
+        self.dialog =''
+        self.node = 0  #int value
+        self.target = 0  #int value
+        self.overshotTarget = False
         
     def update(self, dt):
         pass
     
     def move(self, dt, key_pressed=None):
         '''Move entity around the nodes'''
+        pass
+    
+    def performAction(self):
+        '''Executes when action key is pressed'''
         pass
 
     def render(self, screen):
