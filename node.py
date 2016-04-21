@@ -213,6 +213,13 @@ class NodeGroup(object):
             self.table[nodeVal].neighbors[direction]
         except KeyError:
             pass
+        
+    def nodePosition(self, nodeVal):
+        '''Return the position of a node from screens (0,0) with correction'''
+        test = self.nodes[nodeVal].position + self.areaPos
+        ds = test.diffToNearest(16)
+        self.areaPos += ds
+        return self.nodes[nodeVal].position + self.areaPos
             
     def render(self, screen):
         '''Draw the nodes for testing purposes'''
