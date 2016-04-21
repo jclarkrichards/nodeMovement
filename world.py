@@ -59,6 +59,9 @@ class World(object):
         self.clearAll()
         self.area = area
         self.player.node = area.playerStart
+        self.player.target = area.playerStart
+        self.player.keyDirection = self.player.direction
+        
         #self.addNodes(area.nodes)
         #self.player.loadNewNodes(self.nodes, area.playerStart)
         #self.areaSurface = pygame.Surface(area.size)
@@ -70,6 +73,8 @@ class World(object):
         self.area = self.areas[areaVal]
         self.area.reload()
         self.player.node = nodeVal
+        self.player.target = nodeVal
+        
         #self.addNodes(self.area.nodes)
         #self.player.loadNewNodes(self.nodes, nodeVal)
         #self.areaSurface = pygame.Surface(self.areas[areaVal].size)
