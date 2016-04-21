@@ -4,7 +4,6 @@ from player import Player
 from world import World
 from areas import *
 
-
 class Game(object):
     def __init__(self):
         self.clock = pygame.time.Clock()
@@ -23,6 +22,7 @@ class Game(object):
         
     def controls(self):
         self.keyPressed = pygame.key.get_pressed()
+        self.player.setKeyedDirection(self.keyPressed)
         for event in pygame.event.get():
             if event.type == QUIT:
                 self.quitGame()
@@ -31,7 +31,8 @@ class Game(object):
                     d = self.player.facingDirection
                     if not self.player.direction:
                         #return node that the player is facing towards
-                        print self.player.mover.getNeighborNode(d)
+                        print self.world.area.nodes.getNeighborNode(d)
+                        #print self.player.mover.getNeighborNode(d)
 
     def readObjectText(self):
         pass
@@ -47,7 +48,7 @@ class Game(object):
         while True:
             dt = self.clock.tick(30) / 1000.0
             self.controls()
-            self.world.update(dt, self.keyPressed)
+            self.world.update(dt) #, self.keyPressed)
             self.world.render()
             pygame.display.update()
 

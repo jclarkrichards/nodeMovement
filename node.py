@@ -3,7 +3,8 @@ from vectors import Vector2D
 from numpy import loadtxt
 import numpy
 import os
-"testing"
+from constants import *
+#"testing"
 UP = 1
 DOWN = -1
 LEFT = 2
@@ -27,7 +28,8 @@ class Node(object):
 
 class NodeGroup(object):
     def __init__(self, tileW, tileH):
-        self.nodeDict = {}
+        self.table = {}
+        #self.nodeDict = {}
         self.layout = None
         self.tileW = tileW
         self.tileH = tileH
@@ -35,7 +37,7 @@ class NodeGroup(object):
 
     def createNodeList(self, filename):
         '''Create a dictionary of nodes'''
-        self.nodeDict = {}
+        self.table = {}
         dt = numpy.dtype((str, 2))
         oldDir = os.getcwd()
         newDir = oldDir + '\\TextFiles'
@@ -70,15 +72,15 @@ class NodeGroup(object):
         '''Create Node object and add to dictionary'''
         if self.layout[row][col] == '+':
             try:
-                nodeNum = max(self.nodeDict.keys())
+                nodeNum = max(self.table.keys())
             except ValueError:
                 nodeNum = 0
             finally:
                 nodeNum += 1
                 x = float(col*self.tileW)
                 y = float(row*self.tileH)
-                self.nodeDict[nodeNum] = Node((x, y))
-                self.nodeDict[nodeNum].ID = nodeNum
+                self.table[nodeNum] = Node((x, y))
+                self.table[nodeNum].ID = nodeNum
                 self.layout[row][col] = str(nodeNum)
 
     def isPositiveDigit(self, row, col):
@@ -104,14 +106,14 @@ class NodeGroup(object):
             
     def addNeighborOneWay(self, nodeVal1, nodeVal2):
         '''Set the node at nodeVal2 as a neighbor of node at nodeVal1'''
-        tempVec = self.nodeDict[nodeVal2].position - \
-                  self.nodeDict[nodeVal1].position
+        tempVec = self.table[nodeVal2].position - \
+                  self.table[nodeVal1].position
         tempVec = tempVec.normalize()
         for key in DIRECTIONS.keys():
             if DIRECTIONS[key] == tempVec:
                 direction = key
                 break
-        self.nodeDict[nodeVal1].neighbors[direction] = nodeVal2
+        self.table[nodeVal1].neighbors[direction] = nodeVal2
 
     def addNeighborTwoWay(self, nodeVal, neighborVal):
         self.addNeighborOneWay(nodeVal, neighborVal)
@@ -119,9 +121,9 @@ class NodeGroup(object):
 
     def removeNeighborOneWay(self, nodeVal1, nodeVal2):
         '''Remove nodeVal2 from a nodeVal1 as a neighbor'''
-        for key in self.nodeDict[nodeVal1].neighbors.keys():
-            if self.nodeDict[nodeVal1].neighbors[key] == nodeVal2:
-                junk = self.nodeDict[nodeVal1].neighbors.pop(key)
+        for key in self.table[nodeVal1].neighbors.keys():
+            if self.table[nodeVal1].neighbors[key] == nodeVal2:
+                junk = self.table[nodeVal1].neighbors.pop(key)
                 break
 
     def removeNeighborTwoWay(self, nodeVal, neighborVal):
@@ -131,24 +133,24 @@ class NodeGroup(object):
     def addNode(self, pos, key=None):
         '''Manually add a node to the nodeDict'''
         if key:
-            self.nodeDict[key] = Node(pos)
+            self.table[key] = Node(pos)
         else:
-            num = max(self.nodeDict.keys())
+            num = max(self.table.keys())
             num += 1
-            self.nodeDict[num] = Node(pos)
+            self.table[num] = Node(pos)
 
     def addHiddenNode(self, nodeVal1, nodeVal2):
         '''Add nodeVal2 as a hidden node to nodeVal1'''
-        self.nodeDict[nodeVal1].hidden.append(nodeVal2)
+        self.table[nodeVal1].hidden.append(nodeVal2)
         
     def clearAndAddHidden(self, nodeVal1, nodeVal2):
         '''Clear the hidden nodes and add a new hidden node'''
-        self.nodeDict[nodeVal1].hidden = []
+        self.table[nodeVal1].hidden = []
         self.addHiddenNode(nodeVal1, nodeVal2)
         
     def clearHiddenNodes(self, nodeVal):
         '''Clear the hidden nodes'''
-        self.nodeDict[nodeVal].hidden = []
+        self.table[nodeVal].hidden = []
         
     def walkRight(self, row, col):
         '''Try and find nodes to the right'''
@@ -195,14 +197,31 @@ class NodeGroup(object):
         numpy.savetxt(base+'_node_guide.txt', self.layout, fmt='%s')
         os.chdir(oldDir)
 
+    def getNode(self, nodeVal):
+        '''Return the Node object given the value'''
+        return self.table[nodeVal]
+
+    def getNeighborNode(self, nodeVal, direction):
+        try:
+            self.table[self.getNeighborValue(nodeVal, direction)]
+        except KeyError:
+            pass
+            
+    def getNeighborValue(self, nodeVal, direction):
+        '''Return Node of current nodes neighbor in direction'''
+        try:
+            self.table[nodeVal].neighbors[direction]
+        except KeyError:
+            pass
+            
     def render(self, screen):
         '''Draw the nodes for testing purposes'''
-        for node in self.nodeDict.values():
+        for node in self.table.values():
             pos1 = node.position.toTuple()
             for nextnodeVal in node.neighbors.values():
-                pos2 = self.nodeDict[nextnodeVal].position.toTuple()
+                pos2 = self.table[nextnodeVal].position.toTuple()
                 pygame.draw.line(screen, (255,255,255), pos1, pos2, 2)
-        for node in self.nodeDict.values():
+        for node in self.table.values():
             pos1 = node.position.toTuple()
             pygame.draw.circle(screen, node.COLOR, pos1, 5)
 

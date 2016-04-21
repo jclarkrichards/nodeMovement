@@ -1,6 +1,7 @@
 from node import NodeGroup
-from nodemovement import FourWayMovement
+#from nodemovement import FourWayMovement
 from vectors import Vector2D
+import pygame
 
 '''
 class SubArea(object):
@@ -25,24 +26,29 @@ class SubArea(object):
 '''        
 class AreaAbstract(object):
     def __init__(self, width, height):
+        self.position = Vector2D()
         self.tileWidth, self.tileHeight = width, height
         self.width, self.height = (0, 0)
         self.size = (0, 0)
         self.ID = 0
         self.playerStart = 1
         self.areaStart = 0
-        self.nodes = {}
+        self.nodes = None
         self.neighbors = {}
         self.entityList = []
-        self.subAreas = {}
+        #self.subAreas = {}
+        self.surface = None
         
     def load(self, mapName):
-        nodes = NodeGroup(self.tileWidth, self.tileHeight)
-        nodes.createNodeList(mapName)
-        self.nodes = nodes.nodeDict
-        self.width = nodes.cols * self.tileWidth
-        self.height = nodes.rows * self.tileHeight
+        self.nodes = NodeGroup(self.tileWidth, self.tileHeight)
+        self.nodes.createNodeList(mapName)
+        #self.nodes = nodes.nodeDict
+        self.width = self.nodes.cols * self.tileWidth
+        self.height = self.nodes.rows * self.tileHeight
         self.size = (self.width, self.height)
+        self.surface = pygame.Surface(self.size)
+        self.surface.fill((100,20,30))
+        self.position = Vector2D()
     """    
     def divideIntoSubAreas(self, screenW, screenH):
         '''Divide the area into multiple subAreas the size of the screen'''
@@ -99,14 +105,14 @@ class AreaTest(AreaAbstract):
         self.ID = 2
         self.load('area_test2.txt')
         self.playerStart = 5
-        self.nodes[1].transfer = (27, 1)
-        self.nodes[21].transfer = (1, 2)
-        self.nodes[3].occupied = True #for testing occupancy
+        self.nodes.table[1].transfer = (27, 1)
+        self.nodes.table[21].transfer = (1, 2)
+        self.nodes.table[3].occupied = True #for testing occupancy
         
     def reload(self):
         self.load('area_test2.txt')
-        self.nodes[1].transfer = (27, 1)
-        self.nodes[21].transfer = (1, 2)
+        self.nodes.table[1].transfer = (27, 1)
+        self.nodes.table[21].transfer = (1, 2)
         
 class AreaTest2(AreaAbstract):
     def __init__(self, width, height):
@@ -114,7 +120,7 @@ class AreaTest2(AreaAbstract):
         self.ID = 3
         self.load('area_test3.txt')
         self.playerStart = 3
-        self.nodes[27].transfer = (1, 0)
+        self.nodes.table[27].transfer = (1, 0)
 
     def reload(self):
         self.load('area_test3.txt')
@@ -127,11 +133,11 @@ class AreaTest3(AreaAbstract):
         self.ID = 3
         self.load('area_test4.txt')
         self.playerStart = 3
-        self.nodes[1].transfer = (21, 0)
+        self.nodes.table[1].transfer = (21, 0)
 
     def reload(self):
         self.load('area_test4.txt')
-        self.nodes[1].transfer = (21, 0)
+        self.nodes.table[1].transfer = (21, 0)
 
 
 
