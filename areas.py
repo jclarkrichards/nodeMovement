@@ -49,6 +49,14 @@ class AreaAbstract(object):
         self.surface = pygame.Surface(self.size)
         self.surface.fill((100,20,30))
         self.position = Vector2D()
+        
+    def nodePosition(self, nodeVal):
+        '''Return the position of a node on area with correction'''
+        test = self.nodes.table[nodeVal].position + self.position
+        ds = test.diffToNearest(16)
+        self.position += ds
+        return self.nodes.table[nodeVal].position + self.position
+        
     """    
     def divideIntoSubAreas(self, screenW, screenH):
         '''Divide the area into multiple subAreas the size of the screen'''
