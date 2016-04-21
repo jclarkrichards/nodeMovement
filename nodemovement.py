@@ -243,7 +243,8 @@ class FourWayMovement(object):
 
     def restOnNode(self, node):
         '''Set the entity on top of a node and rest'''
-        self.placeOnNode(node)
+        #self.placeOnNode(node)
+        self.entity.position = self.area.nodePosition(node)
         self.entity.previousDirection = self.entity.direction
         self.entity.direction = STOP
         self.updateEntityVelocity()
@@ -261,12 +262,12 @@ class FourWayMovement(object):
         self.restOnNode(self.node)
         self.setEntityDirection(self.keyDirection)
         
-    def placeOnNode(self, nodeVal):
-        '''Place the entity on top of a node'''
-        test = self.nodes[nodeVal].position + self.areaPos
-        ds = test.diffToNearest(16)
-        self.areaPos += ds
-        self.entity.position = self.nodes[nodeVal].position + self.areaPos
+    #def placeOnNode(self, nodeVal):
+    #    '''Place the entity on top of a node'''
+    #    test = self.nodes[nodeVal].position + self.areaPos
+    #    ds = test.diffToNearest(16)
+    #    self.areaPos += ds
+    #    self.entity.position = self.nodes[nodeVal].position + self.areaPos
 
     #def setKeyDirection(self, key):
     #    '''Set the direction of the key being pressed'''
