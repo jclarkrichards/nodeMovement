@@ -38,6 +38,9 @@ class AreaAbstract(object):
         '''Add an entity and the node it must start on'''
         self.entities[node] = entity
         
+    def setNodeAsOccupied(self, nodeVal):
+        self.nodes.setOccupied(nodeVal)
+        
    
 class AreaTest(AreaAbstract):
     def __init__(self, width, height):
