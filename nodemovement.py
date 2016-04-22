@@ -260,7 +260,8 @@ class FourWayMovement(object):
     def restOnNode(self, node):
         '''Set the entity on top of a node and rest'''
         #self.placeOnNode(node)
-        self.entity.position = self.area.nodePosition(node)
+        if not self.entity.npc:
+            self.entity.position = self.area.nodePosition(node)
         self.entity.previousDirection = self.entity.direction
         self.entity.direction = STOP
         self.updateEntityVelocity()
