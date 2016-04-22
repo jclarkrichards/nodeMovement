@@ -19,6 +19,7 @@ class Entity(object):
         self.target = 0  #int value
         #self.overshotTarget = False
         self.targetOvershot = False
+        self.overrideKeys = False
         
     def update(self, dt):
         pass
@@ -33,17 +34,18 @@ class Entity(object):
 
     def setKeyedDirection(self, key):
         '''key being pressed or simulated pressed'''
-        self.previousDirection = self.direction
-        if key[K_UP]:
-            self.keyDirection = UP
-        elif key[K_DOWN]:
-            self.keyDirection = DOWN
-        elif key[K_RIGHT]:
-            self.keyDirection = RIGHT
-        elif key[K_LEFT]:
-            self.keyDirection = LEFT
-        else:
-            self.keyDirection = None
+        if not self.overrideKeys:
+            self.previousDirection = self.direction
+            if key[K_UP]:
+                self.keyDirection = UP
+            elif key[K_DOWN]:
+                self.keyDirection = DOWN
+            elif key[K_RIGHT]:
+                self.keyDirection = RIGHT
+            elif key[K_LEFT]:
+                self.keyDirection = LEFT
+            else:
+                self.keyDirection = None
 
     def render(self, screen):
         x, y = self.position.toTuple()

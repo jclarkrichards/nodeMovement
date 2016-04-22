@@ -66,17 +66,22 @@ class FourWayMovement(object):
         self.keyDirection = self.entity.keyDirection
         self.targetOvershot = self.entity.targetOvershot
         #print self.keyDirection, self.areaPos, len(self.nodes)
-        
+        if self.entity.overrideKeys:
+            print self.keyDirection, self.entity.previousDirection
+            self.keyDirection = self.entity.previousDirection
+            self.entity.overrideKeys = False
+            
     def onExit(self):
         '''Update the modified values of entity and area'''
         self.entity.node = self.node
         self.entity.target = self.target
-        self.area.position = self.areaPos
+        #self.area.position = self.areaPos
         self.area.nodes.table = self.nodes
         #self.entity.direction = self.direction
         #self.entity.facingDirection = self.facingDirection
         self.entity.keyDirection = self.keyDirection
         self.entity.targetOvershot = self.targetOvershot
+        #print self.area.position
         
     def update(self, dt):
         if self.version == 1:
@@ -108,6 +113,8 @@ class FourWayMovement(object):
     def __updateVersion3__(self, dt):
         '''Entity visually moves from node to node, 
         but does not stop on each node'''
+        #print "Inside update"
+        #print self.keyDirection
         self.moveTowardsTarget(dt)
         if self.overshotTarget():
             self.targetOvershot = True

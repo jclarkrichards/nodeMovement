@@ -81,6 +81,8 @@ class World(object):
         #self.areaSurface.fill((100,20,30))
         self.centerEntities()
         #self.player.mover.keyDirection = self.player.previousDirection
+        #print "Loading transfer"
+        #print self.player.previousDirection, self.player.keyDirection
         self.player.keyDirection = self.player.previousDirection
         self.player.overrideKeys = True
         #print self.player.keyDirection
@@ -111,20 +113,27 @@ class World(object):
     
     def update(self, dt):#, key):
         self.scroll(dt)
+        #if self.area.nodes.table[self.player.node].transfer:
+        #    print "before calling update"
+        #    print self.player.previousDirection
         self.moveCalc.updatePosition(self.player, self.area, dt)
-        
+        #print self.area.position
         #self.player.mover.areaPos = self.surfacePos
         #self.player.move(dt, key)
         #self.surfacePos = self.player.mover.areaPos
         node = self.area.nodes.table[self.player.node]
         target = self.area.nodes.table[self.player.target]
         self.loadArea(node, target)
-
+        #if node.transfer:
+        #    print "after loading new area"
+        #    print self.player.previousDirection
+        
     def loadArea(self, node, target):
         '''Loads a new area if conditions are right'''
         if self.player.targetOvershot:
             if node.transfer:
                 #print node.transfer
+                #print self.player.previousDirection, self.player.direction, self.player.keyDirection
                 if (self.player.previousDirection not in
                     target.neighbors):
                     self.loadTransferArea(*node.transfer)
