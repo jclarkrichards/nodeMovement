@@ -47,10 +47,10 @@ class World(object):
         self.player.keyDirection = self.player.direction
         self.player.position = area.nodePosition(area.playerStart)
         self.centerEntities()
-        for node in self.area.entities.keys():
-            self.area.entities[node].position = area.nodePosition(node)
-            self.npc.append(self.area.entities[node])
-        
+        for node, npc in self.area.entities.items():
+            npc.position = area.nodePosition(node)
+            self.npcs.append(npc)
+       
     def loadTransferArea(self, nodeVal, areaVal):
         self.clearAll()
         self.area = self.areas[areaVal]
@@ -61,9 +61,9 @@ class World(object):
         self.centerEntities()
         self.player.keyDirection = self.player.previousDirection
         self.player.overrideKeys = True
-        for node in self.area.entities.keys():
-            self.area.entities[node].position = area.nodePosition(node)
-            self.npc.append(self.area.entities[node])
+        for node, npc in self.area.entities.items():
+            npc.position = area.nodePosition(node)
+            self.npcs.append(npc)
         
     def centerEntities(self):
         '''Center the player and adjust the other entities'''
@@ -122,6 +122,8 @@ class World(object):
         self.screen.blit(self.area.surface, self.area.position.toTuple())
         self.drawNodes(self.area.surface)
         self.player.render(self.screen)
+        for npc in self.npcs:
+            npc.render(self.area.surface)
 
     def drawNodes(self, surface):
         '''Really only used for testing purposes'''
