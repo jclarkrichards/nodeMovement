@@ -47,9 +47,10 @@ class World(object):
         self.player.keyDirection = self.player.direction
         self.player.position = area.nodePosition(area.playerStart)
         self.centerEntities()
-        for node, npc in self.area.entities.items():
-            npc.position = area.nodePosition(node)
+        for nodeVal, npc in self.area.entities.items():
+            npc.position = self.area.nodePosition(nodeVal)
             self.npcs.append(npc)
+            self.area.setNodeAsOccupied(nodeVal)
        
     def loadTransferArea(self, nodeVal, areaVal):
         self.clearAll()
@@ -62,8 +63,9 @@ class World(object):
         self.player.keyDirection = self.player.previousDirection
         self.player.overrideKeys = True
         for node, npc in self.area.entities.items():
-            npc.position = area.nodePosition(node)
+            npc.position = self.area.nodePosition(node)
             self.npcs.append(npc)
+            self.area.setNodeAsOccupied(nodeVal)
         
     def centerEntities(self):
         '''Center the player and adjust the other entities'''
