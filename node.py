@@ -4,14 +4,14 @@ from numpy import loadtxt
 import numpy
 import os
 from constants import *
-#"testing"
-UP = 1
-DOWN = -1
-LEFT = 2
-RIGHT = -2
-STOP = 0
-DIRECTIONS = {UP:Vector2D(0,-1), DOWN:Vector2D(0,1),
-              LEFT:Vector2D(-1,0), RIGHT:Vector2D(1,0), STOP:Vector2D()}
+
+#UP = 1
+#DOWN = -1
+#LEFT = 2
+#RIGHT = -2
+#STOP = 0
+#DIRECTIONS = {UP:Vector2D(0,-1), DOWN:Vector2D(0,1),
+#              LEFT:Vector2D(-1,0), RIGHT:Vector2D(1,0), STOP:Vector2D()}
 
 class Node(object):
     def __init__(self, pos):
@@ -203,16 +203,16 @@ class NodeGroup(object):
 
     def getNeighborNode(self, nodeVal, direction):
         try:
-            self.table[self.getNeighborValue(nodeVal, direction)]
+            return self.table[self.getNeighborValue(nodeVal, direction)]
         except KeyError:
-            pass
+            return None
             
     def getNeighborValue(self, nodeVal, direction):
         '''Return Node of current nodes neighbor in direction'''
         try:
-            self.table[nodeVal].neighbors[direction]
+            return self.table[nodeVal].neighbors[direction]
         except KeyError:
-            pass
+            return None
         
     
             

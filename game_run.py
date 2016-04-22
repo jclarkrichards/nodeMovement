@@ -23,6 +23,8 @@ class Game(object):
     def controls(self):
         self.keyPressed = pygame.key.get_pressed()
         self.player.setKeyedDirection(self.keyPressed)
+
+        #print self.player.facingDirection, self.player.direction
         for event in pygame.event.get():
             if event.type == QUIT:
                 self.quitGame()
@@ -31,8 +33,7 @@ class Game(object):
                     d = self.player.facingDirection
                     if not self.player.direction:
                         #return node that the player is facing towards
-                        print self.world.area.nodes.getNeighborNode(d)
-                        #print self.player.mover.getNeighborNode(d)
+                        print self.world.area.nodes.getNeighborNode(self.player.node, d)
 
     def readObjectText(self):
         pass

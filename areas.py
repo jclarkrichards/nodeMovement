@@ -132,7 +132,7 @@ class AreaTest2(AreaAbstract):
 
     def reload(self):
         self.load('area_test3.txt')
-        self.nodes[27].transfer = (1, 0)
+        self.nodes.table[27].transfer = (1, 0)
 
 
 class AreaTest3(AreaAbstract):

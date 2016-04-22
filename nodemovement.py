@@ -24,6 +24,7 @@ class FourWayMovement(object):
         self.areaPos = Vector2D()
         self.version = version
         self.keyDirection = STOP
+        self.validDirections = []
         #self.targetOvershot = False
         #self.areaPos = Vector2D() #for testing the nodes on area idea
         #self.minDistance = 0
@@ -64,6 +65,7 @@ class FourWayMovement(object):
         #self.facingDirection = self.entity.facingDirection
         self.keyDirection = self.entity.keyDirection
         self.targetOvershot = self.entity.targetOvershot
+        #print self.keyDirection, self.areaPos, len(self.nodes)
         
     def onExit(self):
         '''Update the modified values of entity and area'''
@@ -126,6 +128,8 @@ class FourWayMovement(object):
         else: #has not overshot target
             self.targetOvershot = False
             if self.isResting():
+                self.setValidDirections()
+                #print self.validDirections
                 if self.isValidDirection(self.keyDirection):
                     self.setEntityDirection(self.keyDirection)
                 else:
@@ -151,7 +155,10 @@ class FourWayMovement(object):
     def removeOccupiedNodes(self):
         '''If a node is occupied with another object, remove it'''
         for direction in self.nodes[self.node].neighbors.keys():
-            node = self.getNeighborNode(direction)
+            #print direction, self.node
+            node = self.area.nodes.getNeighborNode(self.node, direction)
+            
+            #print self.area.nodes.table[self.node].neighbors[direction]
             if node.occupied:
                 self.removeDirection(direction)
 
@@ -181,6 +188,7 @@ class FourWayMovement(object):
         self.entity.facingDirection = direction
         self.setTarget(direction)
         self.validDirections = [direction, direction*-1]
+        #print direction
         
     def lengthFromNode(self, vector):
         vec = vector - self.nodes[self.node].position
@@ -194,7 +202,7 @@ class FourWayMovement(object):
     
     def overshotTarget(self):
         '''Check if entity has overshot target node'''
-        print self.node, self.target
+        #print self.node, self.target
         nodeToTarget = self.lengthFromNode(self.nodes[self.target].position)
         nodeToSelf = self.lengthFromNode(self.entity.position-self.areaPos)
         return nodeToSelf > nodeToTarget and self.node != self.target
@@ -202,6 +210,7 @@ class FourWayMovement(object):
     def moveTowardsTarget(self, dt):
         '''Move entity towards the target'''
         self.updateEntityVelocity()
+        #print self.entity.velocity, self.entity.direction
         #self.entity.position += self.entity.velocity*dt
 
     def updateEntityVelocity(self):
@@ -255,6 +264,7 @@ class FourWayMovement(object):
         
     def isValidDirection(self, direction):
         '''Return True if direction is a valid direction'''
+        #print self.validDirections
         return direction in self.validDirections
         
     def changeDirection(self):

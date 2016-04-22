@@ -74,7 +74,7 @@ class World(object):
         self.area.reload()
         self.player.node = nodeVal
         self.player.target = nodeVal
-        self.player.position = area.nodePosition(area.playerStart)
+        self.player.position = self.area.nodePosition(nodeVal)
         #self.addNodes(self.area.nodes)
         #self.player.loadNewNodes(self.nodes, nodeVal)
         #self.areaSurface = pygame.Surface(self.areas[areaVal].size)
@@ -83,7 +83,8 @@ class World(object):
         #self.player.mover.keyDirection = self.player.previousDirection
         self.player.keyDirection = self.player.previousDirection
         self.player.overrideKeys = True
-
+        #print self.player.keyDirection
+        
     def centerEntities(self):
         '''Center the player and adjust the other entities'''
         x, y = self.screenSize
@@ -117,7 +118,7 @@ class World(object):
         #self.surfacePos = self.player.mover.areaPos
         node = self.area.nodes.table[self.player.node]
         target = self.area.nodes.table[self.player.target]
-        self.loadArea(self.player.node, self.player.target)
+        self.loadArea(node, target)
 
     def loadArea(self, node, target):
         '''Loads a new area if conditions are right'''

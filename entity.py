@@ -44,7 +44,7 @@ class Entity(object):
             self.keyDirection = LEFT
         else:
             self.keyDirection = None
-            
+
     def render(self, screen):
         x, y = self.position.toTuple()
         pygame.draw.circle(screen, (200,200,0), (int(x), int(y)), 8)
