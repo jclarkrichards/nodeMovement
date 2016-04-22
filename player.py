@@ -13,6 +13,7 @@ class Player(Entity):
         #self.mover = FourWayMovement(self, version=3)
         self.velocity = Vector2D()
         self.overrideKeys = False
+        self.npc = False
         
     def update(self, dt):
         pass
