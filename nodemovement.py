@@ -32,7 +32,10 @@ class FourWayMovement(object):
         self.nodes = self.area.nodes.table
         self.node = self.entity.node
         self.target = self.entity.target
-        self.areaPos = self.area.position
+        if self.entity.npc:
+            self.areaPos = Vector2D()
+        else:
+            self.areaPos = self.area.position
         self.keyDirection = self.entity.keyDirection
         self.targetOvershot = self.entity.targetOvershot
         if self.entity.overrideKeys:
