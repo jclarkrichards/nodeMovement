@@ -1,5 +1,4 @@
 from node import NodeGroup
-#from nodemovement import FourWayMovement
 from vectors import Vector2D
 import pygame
 
@@ -16,6 +15,7 @@ class AreaAbstract(object):
         self.neighbors = {}
         self.entityList = []
         self.surface = None
+        self.entities = {}
         
     def load(self, mapName):
         self.nodes = NodeGroup(self.tileWidth, self.tileHeight)
@@ -33,6 +33,10 @@ class AreaAbstract(object):
         ds = test.diffToNearest(16)
         self.position += ds
         return self.nodes.table[nodeVal].position + self.position
+        
+    def addEntity(self, entity, node):
+        '''Add an entity and the node it must start on'''
+        self.entities[entity] = node
         
    
 class AreaTest(AreaAbstract):
