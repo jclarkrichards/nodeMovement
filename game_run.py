@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from player import Player
+from entity import Entity
 from world import World
 from areas import *
 
@@ -14,6 +15,8 @@ class Game(object):
         area = AreaTest(64, 64)
         area2 = AreaTest2(64, 64)
         area3 = AreaTest3(64, 64)
+        npc = Entity()
+        area.addEntity(npc, 10)
         self.world.addArea(area)
         self.world.addArea(area2)
         self.world.addArea(area3)
