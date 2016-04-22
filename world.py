@@ -50,7 +50,9 @@ class World(object):
         for nodeVal, npc in self.area.entities.items():
             npc.position = self.area.nodePosition(nodeVal)
             self.npcs.append(npc)
-            self.area.setNodeAsOccupied(nodeVal)
+            #check to verify if these 2 do the same thing
+            self.area.nodes.table[nodeVal].occupied = True
+            #self.area.setNodeAsOccupied(nodeVal)
        
     def loadTransferArea(self, nodeVal, areaVal):
         self.clearAll()
@@ -65,7 +67,7 @@ class World(object):
         for node, npc in self.area.entities.items():
             npc.position = self.area.nodePosition(node)
             self.npcs.append(npc)
-            self.area.setNodeAsOccupied(nodeVal)
+            self.area.nodes.table[nodeVal].occupied = True
         
     def centerEntities(self):
         '''Center the player and adjust the other entities'''
