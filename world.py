@@ -13,6 +13,7 @@ class World(object):
         self.areas = []
         self.area = None
         self.moveCalc = FourWayMovement(3)
+        self.npcs = []
         
     def setup(self, x, y, tileSize=1):
         '''Set the width and height and size of each tile'''
@@ -46,6 +47,9 @@ class World(object):
         self.player.keyDirection = self.player.direction
         self.player.position = area.nodePosition(area.playerStart)
         self.centerEntities()
+        for node in self.area.entities.keys():
+            self.area.entities[node].position = area.nodePosition(node)
+            self.npc.append(self.area.entities[node])
         
     def loadTransferArea(self, nodeVal, areaVal):
         self.clearAll()
@@ -57,6 +61,9 @@ class World(object):
         self.centerEntities()
         self.player.keyDirection = self.player.previousDirection
         self.player.overrideKeys = True
+        for node in self.area.entities.keys():
+            self.area.entities[node].position = area.nodePosition(node)
+            self.npc.append(self.area.entities[node])
         
     def centerEntities(self):
         '''Center the player and adjust the other entities'''
@@ -102,9 +109,13 @@ class World(object):
     def clearDynamicObjects(self):
         self.dynamicOBJ = {}
         
+    def clearNPCs(self):
+        self.npcs = []
+        
     def clearAll(self):
         '''Clear out all objects and nodes from the world'''
         self.clearDynamicObjects()
+        self.clearNPCs()
     
     def render(self):
         self.screen.blit(self.background, (0,0))
