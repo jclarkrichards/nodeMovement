@@ -36,7 +36,7 @@ class AreaAbstract(object):
         
     def addEntity(self, entity, node):
         '''Add an entity and the node it must start on'''
-        self.entities[entity] = node
+        self.entities[node] = entity
         
    
 class AreaTest(AreaAbstract):
