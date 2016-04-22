@@ -20,6 +20,7 @@ class Entity(object):
         #self.overshotTarget = False
         self.targetOvershot = False
         self.overrideKeys = False
+        self.npc = True #non-player character
         
     def update(self, dt):
         pass
