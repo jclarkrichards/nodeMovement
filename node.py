@@ -205,8 +205,10 @@ class NodeGroup(object):
         except KeyError:
             return None
         
+    def setOccupied(self, nodeVal):
+        node = self.getNode(nodeVal)
+        node.occupied = True
     
-            
     def render(self, screen):
         '''Draw the nodes for testing purposes'''
         for node in self.table.values():
