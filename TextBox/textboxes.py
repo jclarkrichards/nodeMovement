@@ -16,6 +16,7 @@ class TextBox(object):
         self.textSurface = None
         self.active = False
         self.font = None
+        self.scale = 1
         
     def reset(self):
         self.phrase = None
@@ -27,8 +28,11 @@ class TextBox(object):
         if self.phrase:
             self.phrase.update(dt)
 
-    def setFont(self, image, txtfile, size):
+    def setFont(self, image, txtfile, size, scale=1):
         self.font = Text(image, txtfile, size)
+        self.charsize = (size[0]*scale, size[1]*scale)
+        self.setDimensions()
+        self.scale = scale
         
     def createSurface(self):
         self.textSurface = pygame.surface.Surface((self.width, self.height))
@@ -45,21 +49,19 @@ class TextBox(object):
         
     def setPosition(self, screenSize, lower=False, upper=False):
         if lower:
-            x = (screenSize[0] - self.width) / 2.0
             y = screenSize[1] - (self.height + 8)
-            self.position = Vecto2D(x, y)
         elif upper:
-            pass
+            y = 8
+        x = (screenSize[0] - self.width) / 2.0
+        self.position = Vector2D(x, y)
         
-    def setPhrase(self, phrase, scale):
+    def setPhrase(self, phrase):
         '''The input phrase is a string. table is the dictionary'''
-        #self.phraseStr = phrase
-        #self.reset()
         self.phrase = PhraseHandler(phrase)
         self.phrase.mapPhrase(self.font.textDict) #self.phrase.phraseList
         self.charsize = self.phrase.phraseList[0].size
         self.setDimensions()
-        self.scaleCharacters(scale)
+        self.scaleCharacters(self.scale)
         self.setCharPositions(phrase)
         
     def scaleCharacters(self, scale):
@@ -117,10 +119,10 @@ class TextBox(object):
             if self.phrase.finishedReadout():
                 self.reset()
             
-    def readoutCharacters(self, phrase, speed, scale):
+    def readoutCharacters(self, phrase, speed):
         '''Need to just call this once for each phraseset'''
         if not self.phrase and phrase:
-            self.setPhrase(phrase, scale)
+            self.setPhrase(phrase)
             
         if self.phrase:
             if self.active:
