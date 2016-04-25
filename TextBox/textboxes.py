@@ -40,12 +40,16 @@ class TextBox(object):
         self.height = self.lines*self.charsize[1]
         self.createSurface()
         
-    def setPosition(self, position):
+    def setPositionManual(self, position):
         self.position = Vector2D(position)
         
     def setPosition(self, screenSize, lower=False, upper=False):
-        pass
-    
+        if lower:
+            x = (screenSize[0] - self.width) / 2.0
+            y = screenSize[1] - (self.height + 8)
+            self.position = Vecto2D(x, y)
+        elif upper:
+            pass
         
     def setPhrase(self, phrase, scale):
         '''The input phrase is a string. table is the dictionary'''
