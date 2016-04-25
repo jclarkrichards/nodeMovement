@@ -31,7 +31,8 @@ class Game(object):
 
         self.box = TextBox(2, 25)
         self.box.setFont('deluxefont8px.png', 'text_map.txt', (8,8))
-        self.box.setPosition((28, 168))
+        #self.box.setPosition((28, 168))
+        self.box.setPosition(self.world.screenSize, lower=True)
 
     def controls(self):
         self.keyPressed = pygame.key.get_pressed()
