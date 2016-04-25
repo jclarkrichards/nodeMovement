@@ -84,6 +84,7 @@ class FourWayMovement(object):
         self.moveTowardsTarget(dt)
         if self.overshotTarget():
             self.targetOvershot = True
+            self.area.changeOccupancy(self.node, self.target, self.entity)
             self.node = self.target
             self.setValidDirections()
 
