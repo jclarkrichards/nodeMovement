@@ -215,6 +215,11 @@ class NodeGroup(object):
         node.occupied = True
         node.occupant = entity
         
+    def clearOccupancy(self, nodeVal):
+        node = self.getNode(nodeVal)
+        node.occupied = False
+        node.occupant = None
+        
     def render(self, screen):
         '''Draw the nodes for testing purposes'''
         for node in self.table.values():
