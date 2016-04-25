@@ -41,11 +41,11 @@ class TextBox(object):
         self.createSurface()
         
     def setPosition(self, position):
-        #dp = Vector2D(position) - self.position
         self.position = Vector2D(position)
-        #if self.phrase:
-        #    for letter in self.phrase.phraseList:
-        #        letter.position += dp
+        
+    def setPosition(self, screenSize, lower=False, upper=False):
+        pass
+    
         
     def setPhrase(self, phrase, scale):
         '''The input phrase is a string. table is the dictionary'''
