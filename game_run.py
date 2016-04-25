@@ -4,6 +4,7 @@ from player import Player
 from entity import Entity
 from world import World
 from areas import *
+from TextBox.textboxes import TextBox
 
 class Game(object):
     def __init__(self):
@@ -16,16 +17,27 @@ class Game(object):
         area2 = AreaTest2(64, 64)
         area3 = AreaTest3(64, 64)
         npc = Entity()
+        npc.dialog = "Hello, I am an NPC"
+
+        npc2 = Entity()
+        npc2.dialog = "Hello, I am another NPC"
         area.addEntity(npc, 10)
+        area2.addEntity(npc2, 4)
         self.world.addArea(area)
         self.world.addArea(area2)
         self.world.addArea(area3)
         self.world.loadStartArea(area)
         self.keyPressed = None
-        
+
+        self.box = TextBox(2, 25)
+        self.box.setFont('deluxefont8px.png', 'text_map.txt', (8,8))
+        self.box.setPosition((28, 168))
+
     def controls(self):
         self.keyPressed = pygame.key.get_pressed()
         self.player.setKeyedDirection(self.keyPressed)
+        if self.keyPressed[K_SPACE]:
+            self.box.increaseSpeed()
 
         #print self.player.facingDirection, self.player.direction
         for event in pygame.event.get():
@@ -33,10 +45,21 @@ class Game(object):
                 self.quitGame()
             elif event.type == KEYDOWN:
                 if event.key == K_SPACE: #Action key
-                    d = self.player.facingDirection
-                    if not self.player.direction:
-                        #return node that the player is facing towards
-                        print self.world.area.nodes.getNeighborNode(self.player.node, d)
+                    self.displayDialogBox()
+            elif event.type == KEYUP:
+                if event.key == K_SPACE:
+                    self.box.resetSpeed()
+
+    def displayDialogBox(self):
+        d = self.player.facingDirection
+        if not self.player.direction:
+            #return node that the player is facing towards
+            node = self.world.area.nodes.getNeighborNode(self.player.node, d)
+            if node:
+                #print node.ID, node.occupied, node.occupant
+                if node.occupied and node.occupant:
+                    self.box.readoutCharacters(node.occupant.dialog, 15, 1)
+                    #print node.occupant.dialog
 
     def readObjectText(self):
         pass
@@ -52,8 +75,11 @@ class Game(object):
         while True:
             dt = self.clock.tick(30) / 1000.0
             self.controls()
-            self.world.update(dt) #, self.keyPressed)
+            if not self.box.active:
+                self.world.update(dt)
+            self.box.update(dt)
             self.world.render()
+            self.box.render(self.world.screen)
             pygame.display.update()
 
 

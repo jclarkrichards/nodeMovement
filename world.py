@@ -46,13 +46,14 @@ class World(object):
         self.player.target = area.playerStart
         self.player.keyDirection = self.player.direction
         self.player.position = area.nodePosition(area.playerStart)
-        self.centerEntities()
         for nodeVal, npc in self.area.entities.items():
+            #print self.area.position
             npc.position = self.area.nodePosition(nodeVal)
             self.npcs.append(npc)
-            #check to verify if these 2 do the same thing
-            self.area.nodes.table[nodeVal].occupied = True
-            #self.area.setNodeAsOccupied(nodeVal)
+            #self.area.nodes.table[nodeVal].occupied = True
+            self.area.setNodeAsOccupied(nodeVal, npc)
+        self.centerEntities()
+        #print self.npcs
        
     def loadTransferArea(self, nodeVal, areaVal):
         self.clearAll()
@@ -61,13 +62,19 @@ class World(object):
         self.player.node = nodeVal
         self.player.target = nodeVal
         self.player.position = self.area.nodePosition(nodeVal)
-        self.centerEntities()
+        #self.centerEntities()
         self.player.keyDirection = self.player.previousDirection
         self.player.overrideKeys = True
-        for node, npc in self.area.entities.items():
-            npc.position = self.area.nodePosition(node)
+        for nodeVal2, npc in self.area.entities.items():
+            npc.position = self.area.nodePosition(nodeVal2)
             self.npcs.append(npc)
-            self.area.nodes.table[nodeVal].occupied = True
+            #self.area.nodes.table[nodeVal].occupied = True
+            #print nodeVal2
+            self.area.setNodeAsOccupied(nodeVal2, npc)
+        self.centerEntities()
+        #print self.npcs
+        #print self.area.entities
+        #print self.area.entities
         
     def centerEntities(self):
         '''Center the player and adjust the other entities'''
@@ -92,6 +99,7 @@ class World(object):
         self.__addObject__(self.dynamicOBJ, obj)
     
     def update(self, dt):
+        #print self.npcs[0].position, self.area.nodePosition(10)
         self.scroll(dt)
         self.moveCalc.updatePosition(self.player, self.area, dt)
         node = self.area.nodes.table[self.player.node]

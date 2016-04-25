@@ -15,6 +15,7 @@ class Node(object):
         self.portal = None
         self.transfer = ()
         self.occupied = False
+        self.occupant = None
         self.action = None
         
 
@@ -208,7 +209,12 @@ class NodeGroup(object):
     def setOccupied(self, nodeVal):
         node = self.getNode(nodeVal)
         node.occupied = True
-    
+
+    def setOccupant(self, nodeVal, entity):
+        node = self.getNode(nodeVal)
+        node.occupied = True
+        node.occupant = entity
+        
     def render(self, screen):
         '''Draw the nodes for testing purposes'''
         for node in self.table.values():

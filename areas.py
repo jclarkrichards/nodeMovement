@@ -38,8 +38,9 @@ class AreaAbstract(object):
         '''Add an entity and the node it must start on'''
         self.entities[node] = entity
         
-    def setNodeAsOccupied(self, nodeVal):
-        self.nodes.setOccupied(nodeVal)
+    def setNodeAsOccupied(self, nodeVal, entity):
+        #self.nodes.setOccupied(nodeVal)
+        self.nodes.setOccupant(nodeVal, entity)
         
    
 class AreaTest(AreaAbstract):
@@ -50,7 +51,7 @@ class AreaTest(AreaAbstract):
         self.playerStart = 5
         self.nodes.table[1].transfer = (27, 1)
         self.nodes.table[21].transfer = (1, 2)
-        self.nodes.table[3].occupied = True #for testing occupancy
+        #self.nodes.table[3].occupied = True #for testing occupancy
         
     def reload(self):
         self.load('area_test2.txt')
