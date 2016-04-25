@@ -42,6 +42,10 @@ class AreaAbstract(object):
         #self.nodes.setOccupied(nodeVal)
         self.nodes.setOccupant(nodeVal, entity)
         
+    def changeOccupancy(self, nodeVal, targetVal, entity):
+        self.nodes.clearOccupancy(nodeVal)
+        self.setNodeAsOccupied(targetVal, entity)
+        
    
 class AreaTest(AreaAbstract):
     def __init__(self, width, height):
