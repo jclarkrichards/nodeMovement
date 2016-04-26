@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from vectors import Vector2D
 from constants import *
-#from nodemovement import FourWayMovement
+from image_set import SpriteHandler
 
 class Entity(object):
     def __init__(self):
@@ -23,6 +23,8 @@ class Entity(object):
         self.npc = True #non-player character
         self.timePassed = 0
         self.testDirection = LEFT
+        spriteHandler = SpriteHandler('PNG/npc_basic.png')
+        self.image = spriteHandler.grabSingle((0, 0, 16, 16))
         
     def update(self, dt):
         self.backAndForth(dt)
@@ -71,4 +73,5 @@ class Entity(object):
             #print area.nodes.getNode(self.node).position, self.position
         else:
             x, y = self.position.toTuple()
-        pygame.draw.circle(screen, (200,200,0), (int(x), int(y)), 8)
+        screen.blit(self.image, (x, y))
+        #pygame.draw.circle(screen, (200,200,0), (int(x), int(y)), 8)
