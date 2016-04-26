@@ -23,7 +23,7 @@ class AreaAbstract(object):
         self.width = self.nodes.cols * self.tileWidth
         self.height = self.nodes.rows * self.tileHeight
         self.size = (self.width, self.height)
-        self.surface = pygame.Surface(self.size)
+        self.surface = pygame.surface.Surface(self.size).convert()
         self.surface.fill((100,20,30))
         self.position = Vector2D()
         
@@ -37,6 +37,9 @@ class AreaAbstract(object):
     def addEntity(self, entity, node):
         '''Add an entity and the node it must start on'''
         self.entities[node] = entity
+        entity.node = node
+        entity.target = node
+        #entity.position = self.nodePosition(node)
         
     def setNodeAsOccupied(self, nodeVal, entity):
         #self.nodes.setOccupied(nodeVal)

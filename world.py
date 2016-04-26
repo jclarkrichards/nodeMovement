@@ -99,9 +99,14 @@ class World(object):
         self.__addObject__(self.dynamicOBJ, obj)
     
     def update(self, dt):
+        #print self.area.position
         #print self.npcs[0].position, self.area.nodePosition(10)
         self.scroll(dt)
         self.moveCalc.updatePosition(self.player, self.area, dt)
+        for npc in self.npcs:
+            npc.backAndForth(dt)
+            self.moveCalc.updatePosition(npc, self.area, dt)
+            #print npc.position
         node = self.area.nodes.table[self.player.node]
         target = self.area.nodes.table[self.player.target]
         self.loadArea(node, target)
@@ -135,7 +140,8 @@ class World(object):
         self.drawNodes(self.area.surface)
         self.player.render(self.screen)
         for npc in self.npcs:
-            npc.render(self.area.surface)
+            npc.render(self.screen, self.area)
+            #npc.render(self.area.surface)
 
     def drawNodes(self, surface):
         '''Really only used for testing purposes'''

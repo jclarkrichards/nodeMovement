@@ -23,6 +23,7 @@ class Game(object):
         npc2.dialog = "Hello, I am another NPC"
         area.addEntity(npc, 10)
         area2.addEntity(npc2, 4)
+        print npc.node, npc.target
         self.world.addArea(area)
         self.world.addArea(area2)
         self.world.addArea(area3)
@@ -31,7 +32,6 @@ class Game(object):
 
         self.box = TextBox(2, 25)
         self.box.setFont('deluxefont8px.png', 'text_map.txt', (8,8))
-        #self.box.setPosition((28, 168))
         self.box.setPosition(self.world.screenSize, lower=True)
 
     def controls(self):
@@ -59,7 +59,7 @@ class Game(object):
             if node:
                 #print node.ID, node.occupied, node.occupant
                 if node.occupied and node.occupant:
-                    self.box.readoutCharacters(node.occupant.dialog, 15, 1)
+                    self.box.readoutCharacters(node.occupant.dialog, 15)
                     #print node.occupant.dialog
 
     def readObjectText(self):

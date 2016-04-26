@@ -8,10 +8,10 @@ class Entity(object):
     def __init__(self):
         self.ID = 0
         self.position = Vector2D() 
-        self.direction = 0
+        self.direction = STOP
         self.keyDirection = 0
         self.facingDirection = 0
-        self.previousDirection = 0
+        self.previousDirection = STOP
         self.speed = 60
         self.velocity = Vector2D()
         self.dialog =''
@@ -21,9 +21,11 @@ class Entity(object):
         self.targetOvershot = False
         self.overrideKeys = False
         self.npc = True #non-player character
+        self.timePassed = 0
+        self.testDirection = LEFT
         
     def update(self, dt):
-        pass
+        self.backAndForth(dt)
     
     def move(self, dt, key_pressed=None):
         '''Move entity around the nodes'''
@@ -48,6 +50,25 @@ class Entity(object):
             else:
                 self.keyDirection = None
 
-    def render(self, screen):
-        x, y = self.position.toTuple()
+    def backAndForth(self, dt):
+        self.timePassed += dt
+        if self.timePassed >= 5:
+            if self.keyDirection == STOP:
+                if self.testDirection == LEFT:
+                    self.keyDirection = RIGHT
+                    self.testDirection = RIGHT
+                elif self.testDirection == RIGHT:
+                    self.keyDirection = LEFT
+                    self.testDirection = LEFT
+            self.timePassed = 0
+        else:
+            self.keyDirection = STOP
+    
+    def render(self, screen, area=None):
+        if self.npc:
+            position = self.position + area.position
+            x, y = position.toTuple()
+            #print area.nodes.getNode(self.node).position, self.position
+        else:
+            x, y = self.position.toTuple()
         pygame.draw.circle(screen, (200,200,0), (int(x), int(y)), 8)

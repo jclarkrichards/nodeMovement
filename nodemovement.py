@@ -159,7 +159,9 @@ class FourWayMovement(object):
     def moveTowardsTarget(self, dt):
         '''Move entity towards the target'''
         self.updateEntityVelocity()
-
+        if self.entity.npc:
+            self.entity.position += self.entity.velocity*dt
+            
     def updateEntityVelocity(self):
         direction = DIRECTIONS[self.entity.direction]
         self.entity.velocity = direction * self.entity.speed
@@ -201,6 +203,9 @@ class FourWayMovement(object):
         '''Set the entity on top of a node and rest'''
         if not self.entity.npc:
             self.entity.position = self.area.nodePosition(node)
+        else:
+            self.entity.position = self.area.nodes.getNode(node).position
+        
         self.entity.previousDirection = self.entity.direction
         self.entity.direction = STOP
         self.updateEntityVelocity()
