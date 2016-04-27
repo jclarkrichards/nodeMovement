@@ -109,6 +109,9 @@ class FourWayMovement(object):
                     if self.keyDirection:
                         self.entity.facingDirection = self.keyDirection
             else:
+                #print self.node, self.target
+                #if self.node == self.target:
+                self.area.setNodeAsOccupied(self.target, self.entity)
                 if self.keyDirection == self.entity.direction*-1:
                     self.reverseDirection()
           

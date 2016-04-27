@@ -103,8 +103,9 @@ class World(object):
         #print self.npcs[0].position, self.area.nodePosition(10)
         self.scroll(dt)
         self.moveCalc.updatePosition(self.player, self.area, dt)
+        self.player.update(dt)
         for npc in self.npcs:
-            npc.backAndForth(dt)
+            npc.update(dt)
             self.moveCalc.updatePosition(npc, self.area, dt)
             #print npc.position
         node = self.area.nodes.table[self.player.node]

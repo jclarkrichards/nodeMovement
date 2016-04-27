@@ -23,8 +23,11 @@ class Entity(object):
         self.npc = True #non-player character
         self.timePassed = 0
         self.testDirection = LEFT
-        spriteHandler = SpriteHandler('PNG/npc_basic.png')
+        spriteHandler = SpriteHandler('PNG/test.bmp') #npc_basic.png')
         self.image = spriteHandler.grabSingle((0, 0, 16, 16))
+        #print self.image.get_width()
+        self.middle = Vector2D(self.image.get_width()/2.0,
+                               self.image.get_height()/2.0)
         
     def update(self, dt):
         self.backAndForth(dt)
@@ -53,6 +56,7 @@ class Entity(object):
                 self.keyDirection = None
 
     def backAndForth(self, dt):
+        '''AI for an entity moving left and right (pacing)'''
         self.timePassed += dt
         if self.timePassed >= 5:
             if self.keyDirection == STOP:
@@ -67,11 +71,8 @@ class Entity(object):
             self.keyDirection = STOP
     
     def render(self, screen, area=None):
-        if self.npc:
-            position = self.position + area.position
-            x, y = position.toTuple()
-            #print area.nodes.getNode(self.node).position, self.position
-        else:
-            x, y = self.position.toTuple()
-        screen.blit(self.image, (x, y))
-        #pygame.draw.circle(screen, (200,200,0), (int(x), int(y)), 8)
+        position = self.position - self.middle
+        if self.npc and area:
+            position += area.position
+        screen.blit(self.image, position.toTuple())
+
